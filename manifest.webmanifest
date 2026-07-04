@@ -1,0 +1,18 @@
+{
+  "name": "ARCANUM — Esoteric Engine",
+  "short_name": "ARCANUM",
+  "description": "Calcolatore esoterico: numerologia pitagorica, tarocchi e mappatura cosmica.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020202",
+  "theme_color": "#020202",
+  "lang": "it",
+  "categories": ["lifestyle", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

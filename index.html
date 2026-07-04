@@ -26,6 +26,13 @@
     <!-- Emoji favicon (no extra file) -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9B%A4%3C/text%3E%3C/svg%3E">
 
+    <!-- PWA: installabile e offline -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ARCANUM">
+
     <!-- Fonts: preconnect + non-blocking load -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -509,6 +516,23 @@
         .id-title { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
         .id-value { font-family: var(--serif); font-size: 14px; color: var(--ivory); margin-bottom: 6px; }
         .id-sub { font-size: 10px; color: var(--ivory-dim); line-height: 1.5; }
+
+        /* ======= CICLI PERSONALI ======= */
+        .cycles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+        .cycle-card {
+            background: rgba(8,6,4,0.9);
+            border: 1px solid rgba(212,175,55,0.1);
+            padding: 26px 18px; text-align: center; transition: all 0.3s;
+        }
+        .cycle-card:hover { border-color: rgba(212,175,55,0.3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+        .cyc-glyph { font-size: 26px; margin-bottom: 8px; }
+        .cyc-title { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+        .cyc-num { font-family: var(--serif); font-size: 42px; font-weight: 800; color: var(--ivory); line-height: 1; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.25); }
+        .cyc-sub { font-size: 11px; color: var(--ivory-mid); line-height: 1.6; }
+        @media (max-width: 560px) {
+            .cycles-grid { grid-template-columns: 1fr; gap: 10px; }
+            .cycle-card { padding: 20px 16px; }
+        }
 
         /* ======= COMPAT SECTION ======= */
         #compat-section { display: none; width: 100%; }
@@ -1127,6 +1151,13 @@
             </div>
             <div class="daily-card-wrap" id="daily-card-wrap"></div>
 
+            <!-- CICLI PERSONALI -->
+            <div class="section-header">
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secCycles">◈ Cicli Personali</div>
+            </div>
+            <div class="section-sub" id="cycles-sub"></div>
+            <div class="cycles-grid" id="cycles-grid"></div>
+
             <!-- COMPATIBILITÀ -->
             <div id="compat-section">
                 <div class="section-header">
@@ -1525,6 +1556,9 @@
                 dailyUpright: '[ DRITTA — Energia Diretta ]', dailyReversed: '[ ROVESCIATA — Energia Bloccata ]',
                 dailyDescUp: 'Oggi il tuo campo vibrazionale è allineato con il principio di <em>{kw}</em>. Agisci con questa consapevolezza.',
                 dailyDescRev: "L'energia di questa carta è invertita oggi: esamina le resistenze interiori legate a <em>{kw}</em>.",
+                secCycles: '◈ Cicli Personali',
+                cyclesSub: 'Calcolati per oggi, {date} — cambiano nel tempo.',
+                cycleYearTitle: 'Anno Personale', cycleMonthTitle: 'Mese Personale', cycleDayTitle: 'Giorno Personale',
                 secCompat: '◈ Analisi Compatibilità', compatSynergy: 'Sinergia',
                 secTarot: '◈ I Tre Sigilli Divinatori',
                 tarotInstruction: 'Interagisci con i dorsi in successione per rivelare i tuoi Arcani',
@@ -1593,6 +1627,18 @@
                 22:"Numero maestro: unisci grandi visioni alla capacità di realizzarle davvero.",
                 33:"Numero maestro: doni la tua energia agli altri con grande compassione."
             },
+            cycleYear: {
+                1:"Anno di nuovi inizi: semina, iniziativa e indipendenza.",
+                2:"Anno di pazienza e relazioni: collabora e coltiva i legami.",
+                3:"Anno creativo e sociale: espressione, gioia, comunicazione.",
+                4:"Anno di lavoro e fondamenta: ordine, impegno, costruzione.",
+                5:"Anno di cambiamento e libertà: movimento, occasioni, imprevisti.",
+                6:"Anno di responsabilità e affetti: casa, cura, equilibrio.",
+                7:"Anno di introspezione: studio, spiritualità, riflessione.",
+                8:"Anno di potere e risultati: carriera, denaro, riconoscimenti.",
+                9:"Anno di chiusura e bilanci: lascia andare e completa i cicli."
+            },
+            cycleKw: {1:"Inizio",2:"Attesa",3:"Espressione",4:"Lavoro",5:"Cambiamento",6:"Cura",7:"Riflessione",8:"Potere",9:"Chiusura"},
             tarot: [
                 {n:"Il Matto",e:"Nuovi inizi · Innocenza",kw:"Salto nel vuoto"},
                 {n:"Il Mago",e:"Volontà · Manifestazione",kw:"Tutto è possibile"},
@@ -1711,6 +1757,9 @@
                 dailyUpright: '[ UPRIGHT — Direct Energy ]', dailyReversed: '[ REVERSED — Blocked Energy ]',
                 dailyDescUp: 'Today your vibrational field is aligned with the principle of <em>{kw}</em>. Act with this awareness.',
                 dailyDescRev: "This card's energy is reversed today: examine the inner resistances tied to <em>{kw}</em>.",
+                secCycles: '◈ Personal Cycles',
+                cyclesSub: 'Calculated for today, {date} — they change over time.',
+                cycleYearTitle: 'Personal Year', cycleMonthTitle: 'Personal Month', cycleDayTitle: 'Personal Day',
                 secCompat: '◈ Compatibility Analysis', compatSynergy: 'Synergy',
                 secTarot: '◈ The Three Divinatory Sigils',
                 tarotInstruction: 'Interact with the card backs in turn to reveal your Arcana',
@@ -1779,6 +1828,18 @@
                 22:"Master number: you pair big visions with the power to make them real.",
                 33:"Master number: you devote your energy to others with deep compassion."
             },
+            cycleYear: {
+                1:"A year of new beginnings: sow seeds, take initiative, be independent.",
+                2:"A year of patience and relationships: cooperate and nurture bonds.",
+                3:"A creative, social year: expression, joy, communication.",
+                4:"A year of work and foundations: order, effort, building.",
+                5:"A year of change and freedom: movement, chances, the unexpected.",
+                6:"A year of responsibility and love: home, care, balance.",
+                7:"A year of introspection: study, spirituality, reflection.",
+                8:"A year of power and results: career, money, recognition.",
+                9:"A year of closure and reckoning: let go and complete cycles."
+            },
+            cycleKw: {1:"Beginning",2:"Waiting",3:"Expression",4:"Work",5:"Change",6:"Care",7:"Reflection",8:"Power",9:"Closure"},
             tarot: [
                 {n:"The Fool",e:"New beginnings · Innocence",kw:"Leap into the void"},
                 {n:"The Magician",e:"Willpower · Manifestation",kw:"Anything is possible"},
@@ -1874,6 +1935,12 @@
     }
     function numeroPlainText(dict, n) {
         return dict.numeroPlain[n] || dict.numeroPlain[((n - 1) % 9) + 1] || '';
+    }
+    /* Personal cycles reduce fully to a single digit 1-9 (no master stop) */
+    function reduceToDigit(n) {
+        n = Math.abs(n);
+        while (n > 9) n = String(n).split('').reduce((a, c) => a + (+c), 0);
+        return n || 9;
     }
     function fill(tpl, map) { return tpl.replace(/\{(\w+)\}/g, (_, k) => (k in map ? map[k] : '')); }
 
@@ -1993,6 +2060,7 @@
         const dcT = d.tarot[r.daily.idx];
         const today = new Date();
         const descTpl = r.daily.rev ? d.ui.dailyDescRev : d.ui.dailyDescUp;
+        buildCycles(d);
         document.getElementById('daily-card-wrap').innerHTML = `
             <div class="daily-card-mini">
                 <div class="dcm-frame">
@@ -2049,6 +2117,26 @@
         buildReading(d);
         buildSequence(d);
         buildGlossary(d);
+    }
+
+    function buildCycles(d) {
+        const r = state.result;
+        if (!r || !r.cycles) return;
+        document.getElementById('cycles-sub').textContent =
+            fill(d.ui.cyclesSub, { date: new Date().toLocaleDateString(d.locale) });
+        const items = [
+            { glyph: '☀', title: d.ui.cycleYearTitle, num: r.cycles.year, sub: d.cycleYear[r.cycles.year] },
+            { glyph: '☽', title: d.ui.cycleMonthTitle, num: r.cycles.month, sub: d.cycleKw[r.cycles.month] },
+            { glyph: '✦', title: d.ui.cycleDayTitle, num: r.cycles.day, sub: d.cycleKw[r.cycles.day] }
+        ];
+        const g = document.getElementById('cycles-grid');
+        g.innerHTML = '';
+        items.forEach(it => {
+            const c = document.createElement('div');
+            c.className = 'cycle-card';
+            c.innerHTML = `<div class="cyc-glyph" aria-hidden="true">${it.glyph}</div><div class="cyc-title">${it.title}</div><div class="cyc-num">${it.num}</div><div class="cyc-sub">${it.sub}</div>`;
+            g.appendChild(c);
+        });
     }
 
     function buildReading(d) {
@@ -2336,11 +2424,17 @@
             const nameSeed = (name.split('').reduce((a, c) => a + c.charCodeAt(0), 0) * (dest || 1)) >>> 0;
             const cards = drawCards(3, nameSeed);
 
+            // Personal cycles for today (change over time → reason to return)
+            const py = reduceToDigit(month + day + today.getFullYear());
+            const pm = reduceToDigit(py + (today.getMonth() + 1));
+            const pd = reduceToDigit(pm + today.getDate());
+
             const result = {
                 name, dob, day, month, year, dest, expr, soul, pers,
                 zodiacIdx: westernZodiacIdx(dob),
                 chineseIdx: chineseZodiacIdx(year),
                 daily, cards, revealed: [false, false, false],
+                cycles: { year: py, month: pm, day: pd },
                 compat: null, nameA: name.split(' ')[0], nameB: '',
                 name2: '', dob2: ''
             };
@@ -2486,6 +2580,13 @@
         setLang(p && T[p] ? p : detectLang());
     })();
     autoloadFromURL();
+
+    /* Register service worker (PWA offline). No-op on file:// or unsupported. */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(() => { /* ignore */ });
+        });
+    }
     </script>
 </body>
 </html>

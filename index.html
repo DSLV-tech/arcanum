@@ -1891,8 +1891,18 @@
 
         // Masthead
         const nameEl = document.getElementById('res-name');
-        if (animate) scramble(nameEl, r.name.toUpperCase(), 1800);
-        else nameEl.textContent = r.name.toUpperCase();
+        const finalName = r.name.toUpperCase();
+        if (animate && !reduceMotion) {
+            // Render the final name once to measure its wrapped height, then lock the
+            // box so the scramble (variable glyph widths) can't reflow the page below.
+            nameEl.textContent = finalName;
+            const lockH = nameEl.offsetHeight;
+            if (lockH) { nameEl.style.height = lockH + 'px'; nameEl.style.overflow = 'hidden'; }
+            scramble(nameEl, finalName, 1800);
+            setTimeout(() => { nameEl.style.height = ''; nameEl.style.overflow = ''; }, 1950);
+        } else {
+            nameEl.textContent = finalName;
+        }
         document.getElementById('res-date-info').textContent = fill(d.ui.dateInfo, {
             d: String(r.day).padStart(2,'0'), m: String(r.month).padStart(2,'0'),
             y: r.year, yr: r.year, cy: r.dest

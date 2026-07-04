@@ -11,6 +11,7 @@ Un calcolatore esoterico interattivo che combina numerologia pitagorica, tarocch
 - **Identità Cosmica** — Segno zodiacale occidentale, zodiaco cinese, chakra dominante, pietra portafortuna
 - **Carta del Giorno** — Arcano estratto algoritmicamente in base alla data corrente
 - **3 Sigilli Divinatori** — Tre carte dei Tarocchi (Passato / Presente / Futuro) con flip animato
+- **La Lettura** — sintesi interpretativa che collega i quattro numeri tra loro (direzione vs manifestazione, anima vs personalità) e intreccia i tre Arcani in un'unica narrazione Passato→Presente→Futuro (appare dopo aver girato le carte)
 - **Analisi di Compatibilità** — Score vibrazionale tra due soggetti (opzionale)
 - **Il Codice degli Arcani** — la Sequenza Sacra 0→XXI con la chiave esoterica di ogni arcano (tradizione egizio-occulta) e la **frase iniziatica** che le lega in un unico racconto del cammino dell'anima. Ogni arcano estratto e la Carta del Giorno hanno anche una sintesi "In chiaro"
 - **Multilingua IT / EN** — selettore in alto a destra, rilevamento automatico della lingua del browser e memoria della scelta

@@ -702,6 +702,20 @@
             .seq-key { font-size: 12px; }
         }
 
+        /* ======= LETTURA INTERPRETATIVA ======= */
+        .reading-wrap { width: 100%; max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+        .reading-num, .reading-tarot {
+            font-family: var(--serif); font-size: 15px; line-height: 1.9;
+            color: var(--ivory-mid); font-style: italic;
+            padding: 22px 26px; text-align: left;
+            background: linear-gradient(90deg, rgba(212,175,55,0.05), transparent);
+            border-left: 2px solid var(--gold-dim);
+        }
+        .reading-num b { color: var(--gold); font-style: normal; }
+        .reading-tarot[hidden] { display: none; }
+        .reading-tarot-hint { text-align: center; font-size: 11px; letter-spacing: 0.1em; color: var(--ivory-dim); font-style: italic; }
+        .reading-tarot-hint[hidden] { display: none; }
+
         /* ======= GLOSSARIO ESOTERICO ======= */
         .glossary-list {
             width: 100%; max-width: 720px; margin: 28px auto 0; padding: 0;
@@ -1130,6 +1144,16 @@
             </div>
             <div class="tarot-container" id="tarot-board"></div>
 
+            <!-- LETTURA INTERPRETATIVA -->
+            <div class="section-header" style="margin-top:70px">
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secReading">◈ La Lettura</div>
+            </div>
+            <div class="reading-wrap">
+                <p class="reading-num" id="reading-num"></p>
+                <p class="reading-tarot" id="reading-tarot" hidden></p>
+                <p class="reading-tarot-hint" id="reading-tarot-hint" data-i18n="readingTarotHint">Gira le tre carte per completare la lettura.</p>
+            </div>
+
             <!-- CODICE DEGLI ARCANI (SEQUENZA SACRA) -->
             <div class="section-header" style="margin-top:70px">
                 <div class="section-title" role="heading" aria-level="2" data-i18n="secSequence">◈ Il Codice degli Arcani Maggiori</div>
@@ -1505,6 +1529,15 @@
                 secTarot: '◈ I Tre Sigilli Divinatori',
                 tarotInstruction: 'Interagisci con i dorsi in successione per rivelare i tuoi Arcani',
                 tUpright: '[ DRITTA ]', tReversed: '[ ROVESCIATA ]',
+                secReading: '◈ La Lettura',
+                readingNum: "Il tuo Sentiero di Vita <b>{dest}</b> — {archDest} — indica la direzione della tua esistenza; l'Espressione <b>{expr}</b> — {archExpr} — è il modo in cui la porti nel mondo. {bridge} {soul}",
+                readingBridgeSame: "Le due forze coincidono: c'è una rara unità tra ciò che sei e ciò che mostri.",
+                readingBridgeDiff: "Tra la meta e i tuoi mezzi corre una distanza da colmare: è proprio lì che avviene la crescita.",
+                readingSoulSame: "Nel profondo desideri e appari allo stesso modo: interiorità ed esteriorità combaciano.",
+                readingSoulDiff: "Nel profondo desideri {archSoul}, ma agli altri appari come {archPers}: far dialogare questi due volti è la tua alchimia.",
+                readingTarot: "Il Passato parla di {k0}; il Presente ti mette di fronte a {k1}; il Futuro promette {k2}. Tre tappe di un solo cammino: onora ciò che è stato, agisci nel presente, prepara ciò che viene.",
+                readingRev: " (in forma ancora da sciogliere)",
+                readingTarotHint: "Gira le tre carte per completare la lettura.",
                 keyLabel: 'Chiave', secSequence: '◈ Il Codice degli Arcani Maggiori',
                 sequenceIntro: "Letti in ordine da I a XXI, gli Arcani compongono un'unica frase iniziatica sul cammino dell'anima. La prima parola è la Volontà.",
                 seqShow: '⬡ Rivela la Sequenza Sacra ⬡', seqHide: '⬡ Cela la Sequenza ⬡',
@@ -1682,6 +1715,15 @@
                 secTarot: '◈ The Three Divinatory Sigils',
                 tarotInstruction: 'Interact with the card backs in turn to reveal your Arcana',
                 tUpright: '[ UPRIGHT ]', tReversed: '[ REVERSED ]',
+                secReading: '◈ The Reading',
+                readingNum: "Your Life Path <b>{dest}</b> — {archDest} — sets the direction of your life; your Expression <b>{expr}</b> — {archExpr} — is how you carry it into the world. {bridge} {soul}",
+                readingBridgeSame: "The two forces coincide: a rare unity between who you are and what you show.",
+                readingBridgeDiff: "Between your goal and your means lies a gap to bridge — and that is exactly where growth happens.",
+                readingSoulSame: "Deep down you desire and appear the same way: inner and outer selves match.",
+                readingSoulDiff: "Deep down you long for {archSoul}, yet to others you appear as {archPers}: making these two faces speak to each other is your alchemy.",
+                readingTarot: "The Past speaks of {k0}; the Present sets before you {k1}; the Future promises {k2}. Three stages of one path: honor what was, act in the present, prepare what comes.",
+                readingRev: " (still in a form to be unblocked)",
+                readingTarotHint: "Flip the three cards to complete the reading.",
                 keyLabel: 'Key', secSequence: '◈ The Code of the Major Arcana',
                 sequenceIntro: "Read in order from I to XXI, the Arcana form a single initiatic sentence on the soul's journey. The first word is Will.",
                 seqShow: '⬡ Reveal the Sacred Sequence ⬡', seqHide: '⬡ Conceal the Sequence ⬡',
@@ -2004,8 +2046,34 @@
         }
 
         renderTarot(d, animate);
+        buildReading(d);
         buildSequence(d);
         buildGlossary(d);
+    }
+
+    function buildReading(d) {
+        const r = state.result;
+        if (!r) return;
+        const dA = numeroData(d, r.dest).arch, eA = numeroData(d, r.expr).arch;
+        const sA = numeroData(d, r.soul).arch, pA = numeroData(d, r.pers).arch;
+        const bridge = (r.dest === r.expr) ? d.ui.readingBridgeSame : d.ui.readingBridgeDiff;
+        const soul = (r.soul === r.pers) ? d.ui.readingSoulSame : fill(d.ui.readingSoulDiff, { archSoul: sA, archPers: pA });
+        document.getElementById('reading-num').innerHTML =
+            fill(d.ui.readingNum, { dest: r.dest, expr: r.expr, archDest: dA, archExpr: eA, bridge, soul });
+        const key = i => d.tarotKeys[r.cards[i].idx].toLowerCase() + (r.cards[i].rev ? d.ui.readingRev : '');
+        document.getElementById('reading-tarot').innerHTML =
+            fill(d.ui.readingTarot, { k0: key(0), k1: key(1), k2: key(2) });
+        updateReadingVisibility();
+    }
+
+    function updateReadingVisibility() {
+        const r = state.result;
+        if (!r) return;
+        const all = r.revealed.every(Boolean);
+        const rt = document.getElementById('reading-tarot');
+        const hint = document.getElementById('reading-tarot-hint');
+        if (rt) rt.hidden = !all;
+        if (hint) hint.hidden = all;
     }
 
     function buildSequence(d) {
@@ -2090,6 +2158,7 @@
                 if (c.rev) card.classList.add('reversed');
                 wrap.classList.add('revealed');
                 r.revealed[i] = true;
+                updateReadingVisibility();
                 setTimeout(() => {
                     scramble(card.querySelector('.scr-name'), t.n, 700);
                     scramble(card.querySelector('.scr-energy'), `"${t.e}"`, 900);

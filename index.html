@@ -77,6 +77,8 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-x: hidden;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         :focus-visible {
@@ -854,6 +856,14 @@
             .masthead-name { font-size: 30px; }
             .compat-result { padding: 28px 18px; }
             .daily-card-wrap { padding: 28px 18px; gap: 24px; }
+            /* Long section titles must wrap instead of being clipped by overflow-x */
+            .section-header { gap: 12px; }
+            .section-title { white-space: normal; letter-spacing: 0.2em; }
+            /* Ease dense uppercase tracking so nothing spills on narrow screens */
+            .masthead-rune, .panel-eyebrow, .dc-eyebrow, .compat-label,
+            .header-tag, .id-title, .num-label { letter-spacing: 0.18em; }
+            .reading-num, .reading-tarot, .seq-initiatic { padding: 18px 18px; }
+            .masthead-sub { letter-spacing: 0.2em; }
             /* Reveal explanations on tap (no hover on touch) */
             .num-expl { opacity: 1; transform: none; color: var(--ivory-mid); }
             .num-plain { opacity: 1; transform: none; }

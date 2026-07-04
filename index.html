@@ -989,10 +989,12 @@
 
         [data-theme="manuscript"] .identity-card,
         [data-theme="manuscript"] .compat-result,
-        [data-theme="manuscript"] .daily-card-wrap {
+        [data-theme="manuscript"] .daily-card-wrap,
+        [data-theme="manuscript"] .cycle-card {
             background: rgba(233,221,190,0.9);
             border: 1px solid rgba(92,70,38,0.22);
         }
+        [data-theme="manuscript"] .cyc-num { text-shadow: none; }
         [data-theme="manuscript"] .id-glyph { filter: none; }
         [data-theme="manuscript"] .compat-bar {
             background: linear-gradient(90deg, var(--red), var(--gold), #b89334);
@@ -1567,7 +1569,7 @@
                 dailyDescUp: 'Oggi il tuo campo vibrazionale è allineato con il principio di <em>{kw}</em>. Agisci con questa consapevolezza.',
                 dailyDescRev: "L'energia di questa carta è invertita oggi: esamina le resistenze interiori legate a <em>{kw}</em>.",
                 secCycles: '◈ Cicli Personali',
-                cyclesSub: 'Calcolati per oggi, {date} — cambiano nel tempo.',
+                cyclesSub: "L'energia del momento, calcolata per oggi ({date}): l'Anno dà il tema di fondo, il Mese e il Giorno le sfumature. Cambia nel tempo.",
                 cycleYearTitle: 'Anno Personale', cycleMonthTitle: 'Mese Personale', cycleDayTitle: 'Giorno Personale',
                 secCompat: '◈ Analisi Compatibilità', compatSynergy: 'Sinergia',
                 secTarot: '◈ I Tre Sigilli Divinatori',
@@ -1648,7 +1650,11 @@
                 8:"Anno di potere e risultati: carriera, denaro, riconoscimenti.",
                 9:"Anno di chiusura e bilanci: lascia andare e completa i cicli."
             },
-            cycleKw: {1:"Inizio",2:"Attesa",3:"Espressione",4:"Lavoro",5:"Cambiamento",6:"Cura",7:"Riflessione",8:"Potere",9:"Chiusura"},
+            cycleKw: {
+                1:"Avvio · tempo di iniziare",2:"Attesa · pazienza e legami",3:"Espressione · creatività",
+                4:"Lavoro · ordine e impegno",5:"Cambiamento · movimento",6:"Cura · affetti e casa",
+                7:"Riflessione · introspezione",8:"Potere · azione concreta",9:"Chiusura · si completa un ciclo"
+            },
             tarot: [
                 {n:"Il Matto",e:"Nuovi inizi · Innocenza",kw:"Salto nel vuoto"},
                 {n:"Il Mago",e:"Volontà · Manifestazione",kw:"Tutto è possibile"},
@@ -1733,7 +1739,8 @@
                 {t:"Arcani Maggiori",d:"Le 22 carte principali dei tarocchi: ognuna è un archetipo del cammino dell'anima."},
                 {t:"Dritta / Rovesciata",d:"Orientamento della carta: dritta = energia diretta, rovesciata = energia bloccata o interiore."},
                 {t:"Chakra",d:"Centri energetici del corpo nella tradizione orientale; qui associato al tuo numero dell'anima."},
-                {t:"Sinergia",d:"Numero che sintetizza l'incontro tra due percorsi nell'analisi di compatibilità."}
+                {t:"Sinergia",d:"Numero che sintetizza l'incontro tra due percorsi nell'analisi di compatibilità."},
+                {t:"Cicli personali",d:"Anno, Mese e Giorno personale: numeri che descrivono l'energia del periodo attuale e cambiano con il calendario."}
             ]
         },
 
@@ -1768,7 +1775,7 @@
                 dailyDescUp: 'Today your vibrational field is aligned with the principle of <em>{kw}</em>. Act with this awareness.',
                 dailyDescRev: "This card's energy is reversed today: examine the inner resistances tied to <em>{kw}</em>.",
                 secCycles: '◈ Personal Cycles',
-                cyclesSub: 'Calculated for today, {date} — they change over time.',
+                cyclesSub: "The energy of the moment, calculated for today ({date}): the Year gives the underlying theme, the Month and Day the nuances. It changes over time.",
                 cycleYearTitle: 'Personal Year', cycleMonthTitle: 'Personal Month', cycleDayTitle: 'Personal Day',
                 secCompat: '◈ Compatibility Analysis', compatSynergy: 'Synergy',
                 secTarot: '◈ The Three Divinatory Sigils',
@@ -1849,7 +1856,11 @@
                 8:"A year of power and results: career, money, recognition.",
                 9:"A year of closure and reckoning: let go and complete cycles."
             },
-            cycleKw: {1:"Beginning",2:"Waiting",3:"Expression",4:"Work",5:"Change",6:"Care",7:"Reflection",8:"Power",9:"Closure"},
+            cycleKw: {
+                1:"Beginning · time to start",2:"Waiting · patience and bonds",3:"Expression · creativity",
+                4:"Work · order and effort",5:"Change · movement",6:"Care · home and bonds",
+                7:"Reflection · introspection",8:"Power · concrete action",9:"Closure · a cycle completes"
+            },
             tarot: [
                 {n:"The Fool",e:"New beginnings · Innocence",kw:"Leap into the void"},
                 {n:"The Magician",e:"Willpower · Manifestation",kw:"Anything is possible"},
@@ -1934,7 +1945,8 @@
                 {t:"Major Arcana",d:"The 22 main tarot cards: each is an archetype of the soul's journey."},
                 {t:"Upright / Reversed",d:"The card's orientation: upright = direct energy, reversed = blocked or inner energy."},
                 {t:"Chakra",d:"Energy centers of the body in Eastern tradition; here tied to your soul number."},
-                {t:"Synergy",d:"A number that summarizes how two paths meet in the compatibility analysis."}
+                {t:"Synergy",d:"A number that summarizes how two paths meet in the compatibility analysis."},
+                {t:"Personal cycles",d:"Personal Year, Month and Day: numbers that describe the energy of the current period and change with the calendar."}
             ]
         }
     };

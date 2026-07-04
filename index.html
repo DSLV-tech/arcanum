@@ -72,7 +72,13 @@
             overflow-x: hidden;
         }
 
-        :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+        :focus-visible {
+            outline: 3px solid var(--gold-bright);
+            outline-offset: 3px;
+            border-radius: 1px;
+            box-shadow: 0 0 0 5px rgba(0,0,0,0.6);
+        }
+        [data-theme="manuscript"] :focus-visible { box-shadow: 0 0 0 5px rgba(255,250,235,0.7); }
 
         /* ======= BACKGROUND LAYERS ======= */
         #particles-canvas {
@@ -464,6 +470,13 @@
             opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
         }
         .numero-card:hover .num-expl, .numero-card:focus-within .num-expl { opacity: 1; transform: translateY(0); color: var(--ivory-mid); }
+        .num-plain {
+            font-size: 10px; line-height: 1.6; color: var(--gold-bright);
+            font-style: italic; margin-top: 10px;
+            padding-top: 10px; border-top: 1px dashed rgba(212,175,55,0.14);
+            opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
+        }
+        .numero-card:hover .num-plain, .numero-card:focus-within .num-plain { opacity: 1; transform: translateY(0); }
 
         /* ======= IDENTITY GRID (zodiac/element/chakra/stone) ======= */
         .identity-grid {
@@ -663,6 +676,21 @@
             .seq-key { font-size: 12px; }
         }
 
+        /* ======= GLOSSARIO ESOTERICO ======= */
+        .glossary-list {
+            width: 100%; max-width: 720px; margin: 28px auto 0; padding: 0;
+            display: grid; gap: 8px;
+        }
+        .glossary-list[hidden] { display: none; }
+        .gloss-item {
+            padding: 14px 18px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.05), transparent);
+            border-left: 2px solid var(--gold-dim);
+            animation: revealFade 0.4s ease both;
+        }
+        .gloss-term { font-family: var(--syne); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin: 0 0 4px; }
+        .gloss-def { font-size: 13px; color: var(--ivory-mid); line-height: 1.7; margin: 0; }
+
         /* ======= FOOTER ACTIONS ======= */
         .results-actions {
             margin-top: 80px; display: flex; flex-wrap: wrap; gap: 16px;
@@ -764,6 +792,7 @@
             .daily-card-wrap { padding: 28px 18px; gap: 24px; }
             /* Reveal explanations on tap (no hover on touch) */
             .num-expl { opacity: 1; transform: none; color: var(--ivory-mid); }
+            .num-plain { opacity: 1; transform: none; }
         }
         @media (max-width: 380px) {
             .tarot-wrapper, .tarot-card-frame { width: 190px; }
@@ -780,6 +809,20 @@
                 scroll-behavior: auto !important;
             }
             .tarot-card:not(.flipped) { animation: none; }
+        }
+
+        /* ═══════════ FORCED COLORS / HIGH CONTRAST ═══════════ */
+        @media (forced-colors: active) {
+            /* Decorative layers can interfere with system palette */
+            #particles-canvas, #sigil-canvas, .fog-layer, .scanlines, .vignette { display: none; }
+            /* Ensure every surface/control keeps a visible boundary */
+            #input-section, .numero-card, .identity-card, .compat-result,
+            .daily-card-wrap, .tarot-card, .card-face, .seq-item, .gloss-item,
+            .lang-btn, .btn-primary, .btn-share, .btn-restart, .seq-toggle,
+            .compat-toggle, .input-group input, .toast {
+                border: 1px solid CanvasText;
+            }
+            :focus-visible { outline: 3px solid Highlight; box-shadow: none; }
         }
 
         /* ═══════════ THEME: ALCHEMICAL MANUSCRIPT ═══════════ */
@@ -999,6 +1042,7 @@
                     <div class="num-label" data-i18n="numLifePath">Sentiero di Vita</div>
                     <div class="num-archetype" id="arch-destiny">—</div>
                     <div class="num-expl" id="expl-destiny">—</div>
+                    <div class="num-plain" id="plain-destiny"></div>
                 </div>
                 <div class="numero-card" tabindex="0">
                     <div class="num-icon" aria-hidden="true">☿</div>
@@ -1006,6 +1050,7 @@
                     <div class="num-label" data-i18n="numExpression">Espressione</div>
                     <div class="num-archetype" id="arch-expression">—</div>
                     <div class="num-expl" id="expl-expression">—</div>
+                    <div class="num-plain" id="plain-expression"></div>
                 </div>
                 <div class="numero-card" tabindex="0">
                     <div class="num-icon" aria-hidden="true">♀</div>
@@ -1013,6 +1058,7 @@
                     <div class="num-label" data-i18n="numSoulUrge">Impulso dell'Anima</div>
                     <div class="num-archetype" id="arch-soul">—</div>
                     <div class="num-expl" id="expl-soul">—</div>
+                    <div class="num-plain" id="plain-soul"></div>
                 </div>
                 <div class="numero-card" tabindex="0">
                     <div class="num-icon" aria-hidden="true">♄</div>
@@ -1020,6 +1066,7 @@
                     <div class="num-label" data-i18n="numPersonality">Personalità</div>
                     <div class="num-archetype" id="arch-personality">—</div>
                     <div class="num-expl" id="expl-personality">—</div>
+                    <div class="num-plain" id="plain-personality"></div>
                 </div>
             </div>
 
@@ -1059,6 +1106,14 @@
             <p class="section-sub" data-i18n="sequenceIntro" style="margin-top:0; margin-bottom:28px;">La sequenza sacra.</p>
             <button class="seq-toggle" id="seq-toggle" aria-expanded="false" aria-controls="sequence-list" data-i18n="seqShow">⬡ Rivela la Sequenza Sacra ⬡</button>
             <ol class="sequence-list" id="sequence-list" hidden></ol>
+
+            <!-- GLOSSARIO ESOTERICO -->
+            <div class="section-header" style="margin-top:70px">
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secGlossary">◈ Glossario Esoterico</div>
+            </div>
+            <p class="section-sub" data-i18n="glossaryIntro" style="margin-top:0; margin-bottom:28px;">I termini chiave della lettura, spiegati in modo semplice.</p>
+            <button class="seq-toggle" id="gloss-toggle" aria-expanded="false" aria-controls="glossary-list" data-i18n="glossaryShow">⬡ Apri il Glossario ⬡</button>
+            <dl class="glossary-list" id="glossary-list" hidden></dl>
 
             <div class="results-actions">
                 <button class="btn-share" id="btn-share" data-i18n="shareBtn">⛤ Condividi il Responso ⛤</button>
@@ -1405,6 +1460,7 @@
                 numeroSub: "Codici vibrazionali estratti dall'analisi pitagorica",
                 numLifePath: 'Sentiero di Vita', numExpression: 'Espressione',
                 numSoulUrge: "Impulso dell'Anima", numPersonality: 'Personalità',
+                plainLabel: 'In chiaro',
                 secIdentity: '◈ Identità Cosmica',
                 idZodiac: 'Segno Zodiacale', idChinese: 'Zodiaco Cinese',
                 idChakra: 'Chakra Dominante', idStone: 'Pietra Portafortuna',
@@ -1420,6 +1476,9 @@
                 keyLabel: 'Chiave', secSequence: '◈ Il Codice degli Arcani Maggiori',
                 sequenceIntro: "Letti in ordine da I a XXI, gli Arcani compongono un'unica frase iniziatica sul cammino dell'anima. La prima parola è la Volontà.",
                 seqShow: '⬡ Rivela la Sequenza Sacra ⬡', seqHide: '⬡ Cela la Sequenza ⬡',
+                secGlossary: '◈ Glossario Esoterico',
+                glossaryIntro: 'I termini chiave della lettura, spiegati in modo semplice.',
+                glossaryShow: '⬡ Apri il Glossario ⬡', glossaryHide: '⬡ Chiudi il Glossario ⬡',
                 shareBtn: '⛤ Condividi il Responso ⛤',
                 shareTitle: 'Il mio responso ARCANUM',
                 shareText: 'La mia decrittazione vibrazionale — {name}',
@@ -1453,6 +1512,20 @@
                 11:{arch:"[ MASTER ] L'Illuminato",desc:"Numero maestro. Intuito paranormale e sensibilità estrema al campo invisibile. Sei un ponte tra la dimensione ordinaria e quella soprannaturale. Portare questa luce ha il suo costo."},
                 22:{arch:"[ MASTER ] Il Maestro d'Opera",desc:"Il più potente numero di manifestazione. Hai la visione del visionario e la concretezza del costruttore. Sei capace di trasformare idee cosmiche in architettura reale."},
                 33:{arch:"[ MASTER ] Il Guaritore Universale",desc:"La frequenza più alta. Tutta la tua energia è devota all'innalzamento vibrazionale del collettivo. Compassione senza limiti, sacrificio consapevole, amore assoluto."}
+            },
+            numeroPlain: {
+                1:"Sei un leader indipendente: ami iniziare le cose e andare per la tua strada.",
+                2:"Sei sensibile e diplomatico: sai mediare e collaborare con gli altri.",
+                3:"Sei creativo e comunicativo: ti esprimi bene e ami l'arte e la parola.",
+                4:"Sei concreto e organizzato: costruisci con metodo e cerchi la stabilità.",
+                5:"Ami la libertà e il cambiamento: sei curioso, versatile e insofferente alla routine.",
+                6:"Sei premuroso e responsabile: ti prendi cura degli altri e cerchi l'armonia.",
+                7:"Sei riflessivo e analitico: cerchi risposte profonde e apprezzi la solitudine.",
+                8:"Sei ambizioso e concreto: punti a risultati, autorità e successo materiale.",
+                9:"Sei generoso e idealista: pensi in grande e ti interessi al bene comune.",
+                11:"Numero maestro: molto intuitivo e sensibile, con una forte ispirazione.",
+                22:"Numero maestro: unisci grandi visioni alla capacità di realizzarle davvero.",
+                33:"Numero maestro: doni la tua energia agli altri con grande compassione."
             },
             tarot: [
                 {n:"Il Matto",e:"Nuovi inizi · Innocenza",kw:"Salto nel vuoto"},
@@ -1504,6 +1577,17 @@
                 {label:"Alta Sinergia Karmica",desc:"I vostri percorsi si integrano profondamente. Esistono tensioni che alimentano la crescita reciproca."},
                 {label:"Equilibrio Dinamico",desc:"Una connessione complessa con forti potenziali. Richiede consapevolezza e lavoro interiore condiviso."},
                 {label:"Sfida Evolutiva",desc:"La polarità tra le vostre energie genera attrito. Ma l'attrito produce luce. La relazione è un catalizzatore."}
+            ],
+            glossary: [
+                {t:"Sentiero di Vita",d:"Il numero ricavato dalla data di nascita: indica il tema centrale della tua vita."},
+                {t:"Espressione",d:"Numero calcolato da tutte le lettere del nome: come ti manifesti nel mondo."},
+                {t:"Impulso dell'Anima",d:"Numero delle sole vocali del nome: ciò che desideri nel profondo."},
+                {t:"Personalità",d:"Numero delle sole consonanti: l'immagine che gli altri percepiscono di te."},
+                {t:"Numeri Maestro (11, 22, 33)",d:"Numeri che non vengono ridotti a una cifra, considerati di potenziale elevato."},
+                {t:"Arcani Maggiori",d:"Le 22 carte principali dei tarocchi: ognuna è un archetipo del cammino dell'anima."},
+                {t:"Dritta / Rovesciata",d:"Orientamento della carta: dritta = energia diretta, rovesciata = energia bloccata o interiore."},
+                {t:"Chakra",d:"Centri energetici del corpo nella tradizione orientale; qui associato al tuo numero dell'anima."},
+                {t:"Sinergia",d:"Numero che sintetizza l'incontro tra due percorsi nell'analisi di compatibilità."}
             ]
         },
 
@@ -1528,6 +1612,7 @@
                 numeroSub: 'Vibrational codes extracted from Pythagorean analysis',
                 numLifePath: 'Life Path', numExpression: 'Expression',
                 numSoulUrge: 'Soul Urge', numPersonality: 'Personality',
+                plainLabel: 'In plain words',
                 secIdentity: '◈ Cosmic Identity',
                 idZodiac: 'Zodiac Sign', idChinese: 'Chinese Zodiac',
                 idChakra: 'Dominant Chakra', idStone: 'Lucky Stone',
@@ -1543,6 +1628,9 @@
                 keyLabel: 'Key', secSequence: '◈ The Code of the Major Arcana',
                 sequenceIntro: "Read in order from I to XXI, the Arcana form a single initiatic sentence on the soul's journey. The first word is Will.",
                 seqShow: '⬡ Reveal the Sacred Sequence ⬡', seqHide: '⬡ Conceal the Sequence ⬡',
+                secGlossary: '◈ Esoteric Glossary',
+                glossaryIntro: 'The key terms of the reading, explained in plain language.',
+                glossaryShow: '⬡ Open the Glossary ⬡', glossaryHide: '⬡ Close the Glossary ⬡',
                 shareBtn: '⛤ Share the Reading ⛤',
                 shareTitle: 'My ARCANUM reading',
                 shareText: 'My vibrational decryption — {name}',
@@ -1576,6 +1664,20 @@
                 11:{arch:"[ MASTER ] The Enlightened",desc:"Master number. Paranormal intuition and extreme sensitivity to the invisible field. You are a bridge between the ordinary dimension and the supernatural. Carrying this light has its cost."},
                 22:{arch:"[ MASTER ] The Master Builder",desc:"The most powerful manifestation number. You have the vision of the visionary and the solidity of the builder. You can turn cosmic ideas into real architecture."},
                 33:{arch:"[ MASTER ] The Universal Healer",desc:"The highest frequency. All your energy is devoted to raising the vibration of the collective. Boundless compassion, conscious sacrifice, absolute love."}
+            },
+            numeroPlain: {
+                1:"You're an independent leader: you like starting things and going your own way.",
+                2:"You're sensitive and diplomatic: good at mediating and working with others.",
+                3:"You're creative and expressive: good with words, art and communication.",
+                4:"You're practical and organized: you build step by step and value stability.",
+                5:"You love freedom and change: curious, versatile and restless with routine.",
+                6:"You're caring and responsible: you look after others and seek harmony.",
+                7:"You're reflective and analytical: you seek deep answers and value solitude.",
+                8:"You're ambitious and results-driven: aiming at achievement, authority and material success.",
+                9:"You're generous and idealistic: you think big and care about the greater good.",
+                11:"Master number: highly intuitive and sensitive, with strong inspiration.",
+                22:"Master number: you pair big visions with the power to make them real.",
+                33:"Master number: you devote your energy to others with deep compassion."
             },
             tarot: [
                 {n:"The Fool",e:"New beginnings · Innocence",kw:"Leap into the void"},
@@ -1627,6 +1729,17 @@
                 {label:"High Karmic Synergy",desc:"Your paths integrate deeply. Tensions exist that fuel mutual growth."},
                 {label:"Dynamic Balance",desc:"A complex connection with strong potential. It requires awareness and shared inner work."},
                 {label:"Evolutionary Challenge",desc:"The polarity between your energies generates friction. But friction produces light. The relationship is a catalyst."}
+            ],
+            glossary: [
+                {t:"Life Path",d:"The number derived from your birth date: it points to the central theme of your life."},
+                {t:"Expression",d:"Number computed from all the letters of the name: how you manifest in the world."},
+                {t:"Soul Urge",d:"Number from the vowels of the name only: what you desire deep down."},
+                {t:"Personality",d:"Number from the consonants only: the image others perceive of you."},
+                {t:"Master Numbers (11, 22, 33)",d:"Numbers not reduced to a single digit, considered of heightened potential."},
+                {t:"Major Arcana",d:"The 22 main tarot cards: each is an archetype of the soul's journey."},
+                {t:"Upright / Reversed",d:"The card's orientation: upright = direct energy, reversed = blocked or inner energy."},
+                {t:"Chakra",d:"Energy centers of the body in Eastern tradition; here tied to your soul number."},
+                {t:"Synergy",d:"A number that summarizes how two paths meet in the compatibility analysis."}
             ]
         }
     };
@@ -1634,6 +1747,9 @@
     /* Master number-safe accessor for numerology data */
     function numeroData(dict, n) {
         return dict.numero[n] || dict.numero[((n - 1) % 9) + 1] || dict.numero[1];
+    }
+    function numeroPlainText(dict, n) {
+        return dict.numeroPlain[n] || dict.numeroPlain[((n - 1) % 9) + 1] || '';
     }
     function fill(tpl, map) { return tpl.replace(/\{(\w+)\}/g, (_, k) => (k in map ? map[k] : '')); }
 
@@ -1676,6 +1792,8 @@
         compatToggle.textContent = compatActive ? d.ui.compatRemove : d.ui.compatAdd;
         const seqBtn = document.getElementById('seq-toggle');
         if (seqBtn) seqBtn.textContent = seqOpen ? d.ui.seqHide : d.ui.seqShow;
+        const glossBtn = document.getElementById('gloss-toggle');
+        if (glossBtn) glossBtn.textContent = glossOpen ? d.ui.glossaryHide : d.ui.glossaryShow;
         // keep dynamic date label if results already rendered
         if (!state.result) {
             document.getElementById('res-date-info').textContent = d.ui.dateLabelInitial;
@@ -1712,6 +1830,7 @@
                 const data = numeroData(d, val);
                 document.getElementById(`arch-${id}`).textContent = data.arch;
                 document.getElementById(`expl-${id}`).textContent = data.desc;
+                document.getElementById(`plain-${id}`).textContent = `${d.ui.plainLabel}: ${numeroPlainText(d, val)}`;
             };
             animate ? setTimeout(apply, i*200) : apply();
         });
@@ -1793,6 +1912,7 @@
 
         renderTarot(d, animate);
         buildSequence(d);
+        buildGlossary(d);
     }
 
     function buildSequence(d) {
@@ -1804,6 +1924,20 @@
             li.style.animationDelay = (i * 0.02) + 's';
             li.innerHTML = `<div class="seq-roman">${m.id}</div><div class="seq-body"><div class="seq-name">${d.tarot[i].n}</div><div class="seq-key">${d.tarotKeys[i]}</div></div>`;
             ol.appendChild(li);
+        });
+    }
+
+    function buildGlossary(d) {
+        const dl = document.getElementById('glossary-list');
+        dl.innerHTML = '';
+        d.glossary.forEach((g, i) => {
+            const item = document.createElement('div');
+            item.className = 'gloss-item';
+            item.style.animationDelay = (i * 0.02) + 's';
+            const dt = document.createElement('dt'); dt.className = 'gloss-term'; dt.textContent = g.t;
+            const dd = document.createElement('dd'); dd.className = 'gloss-def'; dd.textContent = g.d;
+            item.appendChild(dt); item.appendChild(dd);
+            dl.appendChild(item);
         });
     }
 
@@ -1946,6 +2080,19 @@
         seqList.hidden = !seqOpen;
         seqToggle.setAttribute('aria-expanded', seqOpen ? 'true' : 'false');
         seqToggle.textContent = seqOpen ? T[state.lang].ui.seqHide : T[state.lang].ui.seqShow;
+    });
+
+    /* ═══════════════════════════════════════════
+       GLOSSARY TOGGLE
+       ═══════════════════════════════════════════ */
+    let glossOpen = false;
+    const glossToggle = document.getElementById('gloss-toggle');
+    const glossList = document.getElementById('glossary-list');
+    glossToggle.addEventListener('click', () => {
+        glossOpen = !glossOpen;
+        glossList.hidden = !glossOpen;
+        glossToggle.setAttribute('aria-expanded', glossOpen ? 'true' : 'false');
+        glossToggle.textContent = glossOpen ? T[state.lang].ui.glossaryHide : T[state.lang].ui.glossaryShow;
     });
 
     /* ═══════════════════════════════════════════

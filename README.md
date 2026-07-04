@@ -7,7 +7,7 @@ Un calcolatore esoterico interattivo che combina numerologia pitagorica, tarocch
 
 ## ✦ Funzionalità
 
-- **Matrice Numerologica** — Life Path, Expression, Soul Urge, Personality con descrizioni approfondite
+- **Matrice Numerologica** — Life Path, Expression, Soul Urge, Personality con descrizioni approfondite e una sintesi "In chiaro" in linguaggio semplice
 - **Identità Cosmica** — Segno zodiacale occidentale, zodiaco cinese, chakra dominante, pietra portafortuna
 - **Carta del Giorno** — Arcano estratto algoritmicamente in base alla data corrente
 - **3 Sigilli Divinatori** — Tre carte dei Tarocchi (Passato / Presente / Futuro) con flip animato
@@ -15,6 +15,7 @@ Un calcolatore esoterico interattivo che combina numerologia pitagorica, tarocch
 - **Il Codice degli Arcani** — la Sequenza Sacra 0→XXI con la chiave esoterica di ogni arcano (tradizione egizio-occulta): I = *La Volontà*, II = *La Scienza occulta*… La chiave appare anche sulle carte estratte e sulla Carta del Giorno
 - **Multilingua IT / EN** — selettore in alto a destra, rilevamento automatico della lingua del browser e memoria della scelta
 - **Doppio tema** — ⛤ *Occult / Dark* e ❦ *Manoscritto Alchemico*, commutabili a runtime e persistenti
+- **Glossario Esoterico** — sezione collassabile che spiega in linguaggio semplice i termini della lettura (Sentiero di Vita, Espressione, Arcani, Chakra…), IT/EN
 - **Condivisione** — genera un permalink che riapre la stessa lettura (nome, data, lingua ed eventuale compatibilità); usa il menu di condivisione nativo su mobile o copia il link negli appunti
 
 ## ✧ Note tecniche

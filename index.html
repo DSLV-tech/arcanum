@@ -2,9 +2,36 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ARCANUM // DSLV.TECH</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- ═══════════ SEO / SOCIAL ═══════════ -->
+    <meta name="description" content="ARCANUM — calcolatore esoterico interattivo: numerologia pitagorica, tarocchi e mappatura cosmica. Inserisci nome e data di nascita per la tua decrittazione vibrazionale. Multilingua IT/EN.">
+    <meta name="keywords" content="numerologia, tarocchi, esoterismo, life path, arcani maggiori, zodiaco, chakra, compatibilità, numerology, tarot">
+    <meta name="author" content="DSLV.TECH">
+    <meta name="theme-color" content="#020202">
+    <meta name="color-scheme" content="dark">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ARCANUM — Esoteric Engine v2.0">
+    <meta property="og:description" content="Numerologia pitagorica, tarocchi e mappatura cosmica. La tua decrittazione vibrazionale completa.">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ARCANUM — Esoteric Engine v2.0">
+    <meta name="twitter:description" content="Numerologia pitagorica, tarocchi e mappatura cosmica.">
+
+    <!-- Emoji favicon (no extra file) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9B%A4%3C/text%3E%3C/svg%3E">
+
+    <!-- Fonts: preconnect + non-blocking load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;800&display=swap"></noscript>
+
     <style>
         :root {
             --bg: #020202;
@@ -16,13 +43,14 @@
             --gold-glow: 0 0 20px rgba(212,175,55,0.7), 0 0 50px rgba(212,175,55,0.3), 0 0 80px rgba(212,175,55,0.1);
             --gold-glow-sm: 0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.2);
             --ivory: #FDFBF5;
-            --ivory-dim: rgba(253,251,245,0.45);
-            --ivory-mid: rgba(253,251,245,0.7);
-            --mono: 'DM Mono', monospace;
+            --ivory-dim: rgba(253,251,245,0.62);
+            --ivory-mid: rgba(253,251,245,0.75);
+            --mono: 'DM Mono', ui-monospace, monospace;
             --syne: 'Syne', sans-serif;
             --serif: 'Cinzel', serif;
             --serif-deco: 'Cinzel Decorative', serif;
             --red: #C41E3A;
+            --red-text: #F07C8A;           /* AAA (7:1) red for small text */
             --red-glow: 0 0 20px rgba(196,30,58,0.8), 0 0 50px rgba(196,30,58,0.3);
             --red-dim: rgba(196,30,58,0.5);
             --purple: #7B2D8B;
@@ -38,13 +66,18 @@
             background-color: var(--bg);
             color: var(--ivory);
             font-family: var(--mono);
+            line-height: 1.6;
             min-height: 100vh;
+            min-height: 100dvh;
             overflow-x: hidden;
         }
+
+        :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
 
         /* ======= BACKGROUND LAYERS ======= */
         #particles-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            height: 100dvh;
             z-index: 0; pointer-events: none; opacity: 0.7;
         }
 
@@ -56,6 +89,7 @@
 
         .fog-layer {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            height: 100dvh;
             z-index: 0; pointer-events: none;
             background:
                 radial-gradient(ellipse 60% 40% at 20% 80%, rgba(212,175,55,0.04) 0%, transparent 70%),
@@ -69,12 +103,14 @@
 
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            height: 100dvh;
             background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
             pointer-events: none; z-index: 999; opacity: 0.25;
         }
 
         .vignette {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            height: 100dvh;
             background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.85) 100%);
             pointer-events: none; z-index: 1;
         }
@@ -131,6 +167,7 @@
             position: relative; z-index: 10; width: 100%;
             padding: 20px 40px;
             display: flex; justify-content: space-between; align-items: center;
+            gap: 16px; flex-wrap: wrap;
             border-bottom: 1px solid var(--line);
             background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 100%);
         }
@@ -140,9 +177,24 @@
             text-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
         .brand-logo .x { color: var(--gold); animation: goldPulse 3s infinite; font-size: 22px; }
-        .header-right { text-align: right; }
-        .header-tag { font-size: 9px; letter-spacing: 0.3em; color: var(--red); text-transform: uppercase; text-shadow: var(--red-glow); display: block; }
+        .header-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: flex-end; }
+        .header-tags { text-align: right; }
+        .header-tag { font-size: 9px; letter-spacing: 0.3em; color: var(--red-text); text-transform: uppercase; text-shadow: var(--red-glow); display: block; }
         .header-sub { font-size: 9px; letter-spacing: 0.15em; color: var(--ivory-dim); margin-top: 4px; display: block; }
+
+        /* ======= LANGUAGE SWITCH ======= */
+        .lang-switch { display: flex; gap: 6px; }
+        .lang-btn {
+            font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+            color: var(--ivory-mid); background: transparent;
+            border: 1px solid var(--line); padding: 10px 13px; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+            min-height: 44px; min-width: 44px;
+        }
+        .lang-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+        .lang-btn.active { color: var(--gold-bright); border-color: var(--gold); background: rgba(212,175,55,0.06); }
+        .theme-btn { font-size: 14px; line-height: 1; padding: 7px 11px; }
+        .theme-switch { display: flex; gap: 6px; }
 
         /* ======= MAIN LAYOUT ======= */
         main {
@@ -186,7 +238,7 @@
 
         .panel-eyebrow {
             font-family: var(--mono); font-size: 9px; letter-spacing: 0.4em;
-            color: var(--red); text-transform: uppercase; text-align: center;
+            color: var(--red-text); text-transform: uppercase; text-align: center;
             margin-bottom: 20px; animation: flicker 6s infinite;
         }
 
@@ -215,7 +267,8 @@
             border-left: 2px solid transparent;
             color: var(--ivory); font-family: var(--mono); font-size: 17px;
             padding: 14px 12px; outline: none;
-            transition: all 0.35s; text-align: center; letter-spacing: 3px;
+            transition: border-color 0.35s, background 0.35s, box-shadow 0.35s, letter-spacing 0.35s;
+            text-align: center; letter-spacing: 3px;
         }
         .input-group input:focus {
             background: rgba(212,175,55,0.04);
@@ -225,6 +278,13 @@
             letter-spacing: 4px;
         }
         .input-group input::placeholder { color: rgba(212,175,55,0.2); letter-spacing: 0.5em; }
+        .input-group input[aria-invalid="true"] { border-bottom-color: var(--red); border-left-color: var(--red); }
+
+        .field-error {
+            display: none; color: var(--red-text); font-size: 10px; letter-spacing: 0.1em;
+            margin-top: 8px; text-align: center; text-transform: uppercase;
+        }
+        .field-error.show { display: block; animation: revealFade 0.3s ease; }
 
         .separator {
             display: flex; align-items: center; gap: 12px;
@@ -239,7 +299,7 @@
         .compat-toggle {
             font-size: 10px; color: var(--ivory-dim); letter-spacing: 0.15em;
             background: transparent; border: 1px solid var(--line);
-            padding: 10px 20px; cursor: pointer; width: 100%;
+            padding: 12px 20px; cursor: pointer; width: 100%;
             font-family: var(--mono); transition: all 0.3s;
         }
         .compat-toggle:hover { border-color: var(--gold-dim); color: var(--gold); }
@@ -251,7 +311,7 @@
         button.btn-primary {
             width: 100%;
             background: transparent; border: 1px solid var(--red);
-            color: var(--red); font-family: var(--syne); font-size: 13px;
+            color: var(--red-text); font-family: var(--syne); font-size: 13px;
             font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
             padding: 20px; cursor: pointer; transition: all 0.4s ease;
             position: relative; overflow: hidden; margin-top: 36px;
@@ -324,12 +384,13 @@
         }
         .masthead-rune {
             font-family: var(--mono); font-size: 10px; letter-spacing: 0.5em;
-            color: var(--red); animation: pulse 2s infinite; margin-bottom: 16px;
+            color: var(--red-text); animation: pulse 2s infinite; margin-bottom: 16px;
         }
         .masthead-name {
             font-family: var(--serif-deco); font-size: 52px; color: var(--gold);
             text-shadow: var(--gold-glow); line-height: 1; margin-bottom: 16px;
             animation: glitchShift 8s infinite;
+            word-break: break-word;
         }
         .masthead-sub {
             font-size: 10px; letter-spacing: 0.35em; color: var(--ivory-dim);
@@ -352,7 +413,7 @@
             white-space: nowrap;
         }
         .section-sub {
-            font-size: 9px; letter-spacing: 0.2em; color: var(--ivory-dim);
+            font-size: 10px; letter-spacing: 0.2em; color: var(--ivory-dim);
             text-align: center; margin-bottom: 40px; margin-top: -24px;
         }
 
@@ -375,8 +436,8 @@
             background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
             transform: scaleX(0); transition: transform 0.35s ease;
         }
-        .numero-card:hover::before { transform: scaleX(1); }
-        .numero-card:hover {
+        .numero-card:hover::before, .numero-card:focus-within::before { transform: scaleX(1); }
+        .numero-card:hover, .numero-card:focus-within {
             border-color: rgba(212,175,55,0.35);
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.1);
             transform: translateY(-6px);
@@ -394,15 +455,15 @@
             letter-spacing: 0.25em; color: var(--gold-bright); margin-bottom: 8px;
         }
         .num-archetype {
-            font-family: var(--serif); font-size: 11px; color: var(--red);
+            font-family: var(--serif); font-size: 11px; color: var(--red-text);
             letter-spacing: 0.1em; font-style: italic; margin-bottom: 12px;
         }
         .num-expl {
-            font-size: 9px; line-height: 1.7; color: var(--ivory-dim);
+            font-size: 10px; line-height: 1.7; color: var(--ivory-dim);
             padding-top: 14px; border-top: 1px solid rgba(212,175,55,0.08);
             opacity: 0; transform: translateY(8px); transition: all 0.4s ease;
         }
-        .numero-card:hover .num-expl { opacity: 1; transform: translateY(0); color: var(--ivory-mid); }
+        .numero-card:hover .num-expl, .numero-card:focus-within .num-expl { opacity: 1; transform: translateY(0); color: var(--ivory-mid); }
 
         /* ======= IDENTITY GRID (zodiac/element/chakra/stone) ======= */
         .identity-grid {
@@ -423,7 +484,7 @@
         .id-glyph { font-size: 32px; margin-bottom: 10px; filter: drop-shadow(0 0 8px currentColor); }
         .id-title { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
         .id-value { font-family: var(--serif); font-size: 14px; color: var(--ivory); margin-bottom: 6px; }
-        .id-sub { font-size: 9px; color: var(--ivory-dim); line-height: 1.5; }
+        .id-sub { font-size: 10px; color: var(--ivory-dim); line-height: 1.5; }
 
         /* ======= COMPAT SECTION ======= */
         #compat-section { display: none; width: 100%; }
@@ -437,7 +498,7 @@
         .compat-person { text-align: center; }
         .compat-person .p-name { font-family: var(--serif); font-size: 18px; color: var(--gold); }
         .compat-person .p-num { font-family: var(--serif-deco); font-size: 48px; color: var(--ivory); }
-        .compat-vs { font-family: var(--serif); font-size: 24px; color: var(--red); text-shadow: var(--red-glow); }
+        .compat-vs { font-family: var(--serif); font-size: 24px; color: var(--red-text); text-shadow: var(--red-glow); }
         .compat-bar-wrap { width: 100%; background: rgba(0,0,0,0.5); height: 4px; margin: 20px 0; border-radius: 2px; }
         .compat-bar { height: 100%; border-radius: 2px; transition: width 1.5s cubic-bezier(0.16,1,0.3,1); background: linear-gradient(90deg, var(--red), var(--gold), var(--gold-bright)); }
         .compat-pct { font-family: var(--serif-deco); font-size: 56px; color: var(--gold); text-shadow: var(--gold-glow); }
@@ -448,7 +509,7 @@
         .tarot-instruction {
             font-size: 10px; letter-spacing: 0.2em; color: var(--ivory-dim);
             text-align: center; margin-bottom: 50px;
-            display: flex; align-items: center; gap: 16px;
+            display: flex; align-items: center; gap: 16px; justify-content: center;
         }
         .tarot-instruction::before, .tarot-instruction::after {
             content: '✦'; color: var(--gold); font-size: 8px; animation: pulse 2s infinite;
@@ -456,7 +517,7 @@
 
         .tarot-container {
             display: flex; gap: 36px; justify-content: center;
-            perspective: 2000px; width: 100%;
+            perspective: 2000px; width: 100%; flex-wrap: wrap;
         }
         .tarot-wrapper { width: 220px; flex-shrink: 0; position: relative; }
         .tarot-pos-label {
@@ -523,7 +584,9 @@
         .c-symbol { font-size: 36px; margin-bottom: 12px; filter: drop-shadow(0 0 8px rgba(212,175,55,0.4)); }
         .c-name { font-family: var(--syne); font-size: 16px; font-weight: 800; color: var(--ivory); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; margin-bottom: 8px; }
         .c-energy { font-size: 9px; color: var(--ivory-dim); letter-spacing: 0.1em; line-height: 1.6; font-style: italic; margin-bottom: 14px; }
-        .c-keyword { font-size: 8px; color: var(--gold-dim); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 10px; }
+        .c-keyword { font-size: 8px; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 6px; }
+        .c-key { font-family: var(--serif); font-size: 9px; color: var(--gold); font-style: italic; letter-spacing: 0.06em; line-height: 1.4; margin-bottom: 10px; opacity: 0; transition: opacity 0.5s ease 0.5s; }
+        .tarot-card.flipped .c-key { opacity: 0.9; }
         .card-bottom-bar {
             border-top: 1px solid rgba(212,175,55,0.1);
             padding: 10px; text-align: center;
@@ -534,7 +597,7 @@
             display: inline-block;
         }
         .c-state.upright { color: var(--gold-bright); border: 1px solid rgba(212,175,55,0.25); background: rgba(15,12,0,0.8); }
-        .c-state.reversed { color: var(--red); border: 1px solid rgba(196,30,58,0.25); background: rgba(10,0,0,0.8); }
+        .c-state.reversed { color: var(--red-text); border: 1px solid rgba(196,30,58,0.35); background: rgba(10,0,0,0.8); }
 
         .tarot-label {
             text-align: center; margin-top: 20px;
@@ -562,24 +625,120 @@
         .dcm-symbol { font-size: 30px; }
         .dcm-roman { font-family: var(--serif); font-size: 11px; color: var(--gold); }
         .daily-card-info { flex: 1; }
-        .dc-eyebrow { font-size: 9px; letter-spacing: 0.4em; color: var(--red); text-transform: uppercase; margin-bottom: 10px; }
-        .dc-name { font-family: var(--serif); font-size: 24px; color: var(--gold); text-shadow: var(--gold-glow-sm); margin-bottom: 8px; }
+        .dc-eyebrow { font-size: 9px; letter-spacing: 0.4em; color: var(--red-text); text-transform: uppercase; margin-bottom: 10px; }
+        .dc-name { font-family: var(--serif); font-size: 24px; color: var(--gold); text-shadow: var(--gold-glow-sm); margin-bottom: 6px; }
+        .dc-key { font-family: var(--serif); font-size: 11px; font-style: italic; color: var(--gold-bright); letter-spacing: 0.06em; margin-bottom: 12px; }
         .dc-state { font-size: 9px; letter-spacing: 0.25em; margin-bottom: 16px; }
-        .dc-state.up { color: var(--gold-bright); } .dc-state.rev { color: var(--red); }
+        .dc-state.up { color: var(--gold-bright); } .dc-state.rev { color: var(--red-text); }
         .dc-desc { font-size: 11px; color: var(--ivory-mid); line-height: 1.7; }
 
-        /* ======= FOOTER RESET ======= */
+        /* ======= SEQUENZA SACRA (Codice degli Arcani) ======= */
+        .seq-toggle {
+            background: transparent; border: 1px solid var(--gold-dim);
+            color: var(--gold); font-family: var(--syne); font-size: 11px; font-weight: 700;
+            letter-spacing: 0.3em; text-transform: uppercase; padding: 14px 28px;
+            cursor: pointer; transition: all 0.35s; margin-bottom: 8px;
+        }
+        .seq-toggle:hover { background: rgba(212,175,55,0.06); color: var(--gold-bright); box-shadow: var(--gold-glow-sm); }
+        .sequence-list {
+            list-style: none; width: 100%; max-width: 720px;
+            margin: 28px auto 0; padding: 0;
+            display: grid; gap: 8px;
+        }
+        .sequence-list[hidden] { display: none; }
+        .seq-item {
+            display: grid; grid-template-columns: 46px 1fr; align-items: baseline;
+            gap: 14px; padding: 12px 18px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.05), transparent);
+            border-left: 2px solid var(--gold-dim);
+            transition: all 0.3s; animation: revealFade 0.4s ease both;
+        }
+        .seq-item:hover { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(212,175,55,0.1), transparent); }
+        .seq-roman { font-family: var(--serif-deco); font-size: 15px; color: var(--gold); text-align: right; }
+        .seq-body { display: flex; flex-direction: column; gap: 2px; }
+        .seq-name { font-family: var(--syne); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ivory-mid); }
+        .seq-key { font-family: var(--serif); font-size: 13px; font-style: italic; color: var(--gold-bright); letter-spacing: 0.03em; }
+        @media (max-width: 500px) {
+            .seq-item { grid-template-columns: 38px 1fr; gap: 10px; padding: 10px 12px; }
+            .seq-key { font-size: 12px; }
+        }
+
+        /* ======= FOOTER ACTIONS ======= */
+        .results-actions {
+            margin-top: 80px; display: flex; flex-wrap: wrap; gap: 16px;
+            align-items: center; justify-content: center;
+        }
+        .btn-share {
+            background: transparent; border: 1px solid var(--gold-dim);
+            color: var(--gold); font-family: var(--syne); font-size: 11px; font-weight: 700;
+            letter-spacing: 0.28em; text-transform: uppercase; padding: 14px 30px;
+            cursor: pointer; transition: all 0.35s;
+        }
+        .btn-share:hover {
+            border-color: var(--gold); color: var(--gold-bright);
+            background: rgba(212,175,55,0.06); box-shadow: var(--gold-glow-sm);
+            transform: translateY(-2px);
+        }
         .btn-restart {
-            margin-top: 80px;
             background: transparent; border: 1px solid rgba(212,175,55,0.15);
             color: var(--ivory-dim); font-family: var(--mono); font-size: 10px;
             letter-spacing: 0.25em; text-transform: uppercase; padding: 14px 32px;
             cursor: pointer; transition: all 0.35s;
         }
         .btn-restart:hover {
-            border-color: var(--red); color: var(--red);
+            border-color: var(--red); color: var(--red-text);
             box-shadow: var(--red-glow);
         }
+
+        /* ======= TOAST ======= */
+        .toast {
+            position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(20px);
+            z-index: 1000; background: var(--panel); color: var(--gold-bright);
+            border: 1px solid var(--gold-dim); box-shadow: var(--gold-glow-sm);
+            font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+            padding: 14px 26px; backdrop-filter: blur(20px);
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .toast[hidden] { display: block; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ======= SITE FOOTER ======= */
+        .site-footer {
+            position: relative; z-index: 10; width: 100%;
+            padding: 40px 24px 48px; text-align: center;
+            border-top: 1px solid var(--line);
+            display: flex; flex-direction: column; gap: 8px; align-items: center;
+            background: linear-gradient(0deg, rgba(0,0,0,0.4), transparent);
+        }
+        .footer-brand { font-family: var(--serif-deco); font-size: 14px; letter-spacing: 0.3em; color: var(--ivory-mid); }
+        .footer-brand .x { color: var(--gold); }
+        .footer-sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--ivory-dim); text-transform: uppercase; }
+
+        /* ======= READABILITY BASELINE (WCAG AAA-oriented, always on) =======
+           Larger body type, generous line-height (>=1.5) and reduced tracking.
+           Applied as default so comfortable reading is the standard, not an option. */
+        .desc { font-size: 13px; letter-spacing: 0.03em; line-height: 1.8; }
+        .section-sub { font-size: 12px; letter-spacing: 0.08em; }
+        .num-label { font-size: 11px; letter-spacing: 0.16em; }
+        .num-archetype { font-size: 12px; }
+        .num-expl { font-size: 11px; letter-spacing: 0.02em; line-height: 1.75; }
+        .id-title { font-size: 10px; letter-spacing: 0.16em; }
+        .id-value { font-size: 15px; }
+        .id-sub { font-size: 12px; line-height: 1.6; }
+        .c-energy { font-size: 10px; letter-spacing: 0.04em; line-height: 1.7; }
+        .c-key { font-size: 10px; }
+        .dc-desc { font-size: 13px; letter-spacing: 0.02em; line-height: 1.8; }
+        .dc-key { font-size: 13px; }
+        .compat-desc { font-size: 14px; line-height: 1.8; }
+        .compat-label { font-size: 11px; letter-spacing: 0.16em; }
+        .seq-name { font-size: 12px; letter-spacing: 0.08em; }
+        .seq-key { font-size: 15px; line-height: 1.5; }
+        .loader-log { font-size: 11px; line-height: 1.9; }
+        .tarot-label { font-size: 12px; }
+        .tarot-instruction { font-size: 11px; letter-spacing: 0.1em; }
+        .input-group label { font-size: 11px; letter-spacing: 0.16em; }
+        .field-error { font-size: 11px; }
+        .footer-sub { font-size: 11px; }
 
         /* ======= RESPONSIVE ======= */
         @media (max-width: 900px) {
@@ -592,25 +751,177 @@
             .daily-card-wrap { flex-direction: column; text-align: center; }
             .compat-score-wrap { flex-direction: column; gap: 16px; }
         }
-        @media (max-width: 500px) {
+        @media (max-width: 560px) {
+            header { padding: 14px 18px; }
+            .header-right { gap: 12px; }
+            main { padding: 40px 16px 80px; }
+            #input-section { padding: 32px 20px; }
             .numero-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .identity-grid { grid-template-columns: 1fr 1fr; }
-            header { padding: 16px 20px; }
+            .identity-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .num-value { font-size: 46px; }
+            .masthead-name { font-size: 30px; }
+            .compat-result { padding: 28px 18px; }
+            .daily-card-wrap { padding: 28px 18px; gap: 24px; }
+            /* Reveal explanations on tap (no hover on touch) */
+            .num-expl { opacity: 1; transform: none; color: var(--ivory-mid); }
         }
+        @media (max-width: 380px) {
+            .tarot-wrapper, .tarot-card-frame { width: 190px; }
+            .tarot-card-frame { height: 300px; }
+            .lang-btn { padding: 7px 9px; font-size: 9px; }
+        }
+
+        /* ======= REDUCED MOTION ======= */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .tarot-card:not(.flipped) { animation: none; }
+        }
+
+        /* ═══════════ THEME: ALCHEMICAL MANUSCRIPT ═══════════ */
+        [data-theme="manuscript"] {
+            --bg: #e4d6b4;
+            --panel: rgba(238, 228, 201, 0.94);
+            --line: rgba(92, 70, 38, 0.28);
+            --gold: #463307;
+            --gold-bright: #50390c;
+            --gold-dim: rgba(70, 51, 7, 0.9);
+            --gold-glow: none;
+            --gold-glow-sm: none;
+            --ivory: #332612;
+            --ivory-dim: rgba(47, 35, 15, 0.9);
+            --ivory-mid: rgba(47, 35, 15, 0.95);
+            --red: #8f2d1e;
+            --red-text: #6e1f13;
+            --red-glow: none;
+            --red-dim: rgba(143, 45, 30, 0.5);
+            --mono: 'Cinzel', Georgia, serif;
+            --syne: 'Cinzel Decorative', serif;
+        }
+        [data-theme="manuscript"] body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 18% 22%, rgba(150,118,66,0.14), transparent 42%),
+                radial-gradient(ellipse at 82% 72%, rgba(120,88,44,0.12), transparent 46%),
+                radial-gradient(ellipse at 60% 90%, rgba(90,60,28,0.08), transparent 50%),
+                radial-gradient(ellipse at 40% 8%, rgba(110,80,40,0.07), transparent 40%);
+        }
+        [data-theme="manuscript"] .scanlines { display: none; }
+        [data-theme="manuscript"] .vignette {
+            background: radial-gradient(ellipse at center, transparent 52%, rgba(60,40,14,0.4) 100%);
+        }
+        [data-theme="manuscript"] .fog-layer {
+            background:
+                radial-gradient(ellipse 55% 40% at 25% 78%, rgba(120,88,44,0.10) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 55% at 78% 22%, rgba(143,45,30,0.06) 0%, transparent 70%);
+            animation: none; opacity: 0.7;
+        }
+        [data-theme="manuscript"] #particles-canvas { opacity: 0.4; mix-blend-mode: multiply; }
+        [data-theme="manuscript"] #sigil-canvas { opacity: 0.09; }
+
+        [data-theme="manuscript"] header {
+            background: linear-gradient(180deg, rgba(214,198,158,0.92) 0%, rgba(214,198,158,0.25) 100%);
+        }
+        [data-theme="manuscript"] .site-footer {
+            background: linear-gradient(0deg, rgba(120,88,44,0.12), transparent);
+        }
+        [data-theme="manuscript"] .brand-logo { text-shadow: none; }
+        [data-theme="manuscript"] .header-tag { text-shadow: none; }
+
+        [data-theme="manuscript"] #input-section {
+            backdrop-filter: none;
+            border: 1px solid rgba(92,70,38,0.45);
+            box-shadow: inset 0 0 70px rgba(120,88,40,0.14), 0 22px 55px rgba(60,40,14,0.28);
+            animation: none;
+        }
+        [data-theme="manuscript"] #input-section::before { display: none; }
+        [data-theme="manuscript"] #input-section::after { border-color: rgba(92,70,38,0.18); }
+        [data-theme="manuscript"] .panel-eyebrow { animation: none; }
+
+        [data-theme="manuscript"] h1,
+        [data-theme="manuscript"] .masthead-name { text-shadow: none; }
+        [data-theme="manuscript"] .masthead-name { animation: none; }
+
+        [data-theme="manuscript"] .input-group input {
+            background: rgba(255,250,235,0.55);
+            color: var(--ivory);
+            border-bottom-color: rgba(92,70,38,0.5);
+        }
+        [data-theme="manuscript"] .input-group input::placeholder { color: rgba(120,92,40,0.4); }
+        [data-theme="manuscript"] .input-group input:focus {
+            background: rgba(255,250,235,0.8);
+            box-shadow: 0 6px 16px -10px rgba(92,70,38,0.5);
+        }
+
+        [data-theme="manuscript"] .numero-card {
+            background: linear-gradient(145deg, rgba(236,224,194,0.96), rgba(224,210,178,0.93));
+            border: 1px solid rgba(92,70,38,0.22);
+        }
+        [data-theme="manuscript"] .numero-card:hover,
+        [data-theme="manuscript"] .numero-card:focus-within {
+            border-color: rgba(92,70,38,0.5);
+            box-shadow: 0 14px 34px rgba(70,48,18,0.28);
+        }
+        [data-theme="manuscript"] .num-value { text-shadow: none; color: var(--ivory); }
+        [data-theme="manuscript"] .num-value.master { color: var(--gold); text-shadow: none; }
+
+        [data-theme="manuscript"] .identity-card,
+        [data-theme="manuscript"] .compat-result,
+        [data-theme="manuscript"] .daily-card-wrap {
+            background: rgba(233,221,190,0.9);
+            border: 1px solid rgba(92,70,38,0.22);
+        }
+        [data-theme="manuscript"] .id-glyph { filter: none; }
+        [data-theme="manuscript"] .compat-bar {
+            background: linear-gradient(90deg, var(--red), var(--gold), #b89334);
+        }
+        [data-theme="manuscript"] .compat-pct { text-shadow: none; }
+
+        /* Tarot — vellum cards with ink engraving */
+        [data-theme="manuscript"] .tarot-card {
+            box-shadow: 0 20px 45px rgba(60,40,14,0.4), 0 0 0 1px rgba(92,70,38,0.2);
+        }
+        [data-theme="manuscript"] .card-back { background: #ded0a8; border-color: rgba(92,70,38,0.5); }
+        [data-theme="manuscript"] .card-back-inner {
+            border-color: rgba(92,70,38,0.25);
+            background:
+                repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(92,70,38,0.05) 12px, rgba(92,70,38,0.05) 13px),
+                repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(92,70,38,0.05) 12px, rgba(92,70,38,0.05) 13px);
+        }
+        [data-theme="manuscript"] .cb-sigil { text-shadow: none; }
+        [data-theme="manuscript"] .card-front {
+            background: linear-gradient(160deg, #ece0bf, #ded0a8);
+            border-color: rgba(92,70,38,0.6);
+        }
+        [data-theme="manuscript"] .card-top-bar { background: rgba(92,70,38,0.08); border-bottom-color: rgba(92,70,38,0.2); }
+        [data-theme="manuscript"] .c-symbol { filter: none; }
+        [data-theme="manuscript"] .c-name { color: var(--ivory); }
+        [data-theme="manuscript"] .dcm-frame { background: #ded0a8; border-color: rgba(92,70,38,0.5); }
+        [data-theme="manuscript"] .dc-name { text-shadow: none; }
     </style>
 </head>
 <body>
-    <canvas id="particles-canvas"></canvas>
-    <canvas id="sigil-canvas"></canvas>
-    <div class="fog-layer"></div>
-    <div class="scanlines"></div>
-    <div class="vignette"></div>
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+    <canvas id="sigil-canvas" aria-hidden="true"></canvas>
+    <div class="fog-layer" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
 
     <header>
         <div class="brand-logo"><span class="x">A</span>RCANUM</div>
         <div class="header-right">
-            <span class="header-tag">⛤ DSLV.TECH // VHR</span>
-            <span class="header-sub">Secure Uplink — Esoteric Engine v2.0</span>
+            <div class="theme-switch" role="group" aria-label="Theme">
+                <button type="button" class="lang-btn theme-btn active" data-theme="dark" aria-pressed="true" title="Occult / Dark" aria-label="Occult / Dark theme">⛤</button>
+                <button type="button" class="lang-btn theme-btn" data-theme="manuscript" aria-pressed="false" title="Alchemical Manuscript" aria-label="Alchemical Manuscript theme">❦</button>
+            </div>
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" class="lang-btn" data-lang="it" aria-pressed="true">IT</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+            </div>
         </div>
     </header>
 
@@ -622,42 +933,44 @@
             <div class="corner corner-bl"></div>
             <div class="corner corner-br"></div>
 
-            <div class="panel-eyebrow">⬡ Inizializzazione Protocollo Animico ⬡</div>
+            <div class="panel-eyebrow" data-i18n="panelEyebrow">⬡ Inizializzazione Protocollo Animico ⬡</div>
             <h1><span class="x">A</span>RCANUM</h1>
-            <p class="desc">Decrittazione dell'Entità Vibrazionale attraverso calcolo numerico Pitagorico, lettura degli Arcani Maggiori e mappatura cosmica della coscienza.</p>
+            <p class="desc" data-i18n="desc">Decrittazione dell'Entità Vibrazionale attraverso calcolo numerico Pitagorico, lettura degli Arcani Maggiori e mappatura cosmica della coscienza.</p>
 
             <div class="loader-wrap" id="loader-wrap">
-                <div class="sigil-loader"></div>
-                <div class="loader-text">Elaborazione in corso...</div>
-                <div class="loader-log" id="loader-log"></div>
+                <div class="sigil-loader" aria-hidden="true"></div>
+                <div class="loader-text" data-i18n="loaderText">Elaborazione in corso...</div>
+                <div class="loader-log" id="loader-log" role="status" aria-live="polite"></div>
             </div>
 
-            <form id="engine-form">
+            <form id="engine-form" novalidate>
                 <div class="input-group">
-                    <label>◈ Designazione Soggetto (Nome Completo)</label>
-                    <input type="text" id="fullName" required placeholder="— nome —" autocomplete="off">
+                    <label for="fullName" data-i18n="labelName">◈ Designazione Soggetto (Nome Completo)</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="— nome —" data-i18n-ph="phName" autocomplete="name" aria-describedby="err-name">
+                    <div class="field-error" id="err-name" data-i18n="errName">Inserisci un nome valido (min. 2 lettere).</div>
                 </div>
                 <div class="input-group">
-                    <label>◈ Punto di Origine (Data di Nascita)</label>
-                    <input type="date" id="birthDate" required>
+                    <label for="birthDate" data-i18n="labelDob">◈ Punto di Origine (Data di Nascita)</label>
+                    <input type="date" id="birthDate" name="birthDate" required aria-describedby="err-dob">
+                    <div class="field-error" id="err-dob" data-i18n="errDob">Inserisci una data di nascita valida (non futura).</div>
                 </div>
 
-                <div class="separator">⬡ compatibilità opzionale ⬡</div>
-                <button type="button" class="compat-toggle" id="compat-toggle">
+                <div class="separator" data-i18n="sepCompat">⬡ compatibilità opzionale ⬡</div>
+                <button type="button" class="compat-toggle" id="compat-toggle" aria-expanded="false" aria-controls="compat-fields">
                     + Aggiungi Secondo Soggetto per Analisi di Compatibilità
                 </button>
                 <div id="compat-fields">
                     <div class="input-group" style="margin-top:20px">
-                        <label>◈ Designazione Soggetto B (Nome)</label>
-                        <input type="text" id="fullName2" placeholder="— nome —" autocomplete="off">
+                        <label for="fullName2" data-i18n="labelName2">◈ Designazione Soggetto B (Nome)</label>
+                        <input type="text" id="fullName2" name="fullName2" placeholder="— nome —" data-i18n-ph="phName" autocomplete="off">
                     </div>
                     <div class="input-group">
-                        <label>◈ Punto di Origine Soggetto B</label>
-                        <input type="date" id="birthDate2">
+                        <label for="birthDate2" data-i18n="labelDob2">◈ Punto di Origine Soggetto B</label>
+                        <input type="date" id="birthDate2" name="birthDate2">
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary" id="btn-submit">
+                <button type="submit" class="btn-primary" id="btn-submit" data-i18n="btnSubmit">
                     ⬡ Avvia Algoritmo Esoterico ⬡
                 </button>
             </form>
@@ -668,43 +981,43 @@
 
             <!-- MASTHEAD -->
             <div class="player-masthead">
-                <div class="masthead-rune">⛤ Codice Vibrazionale Decrittato ⛤</div>
+                <div class="masthead-rune" data-i18n="mastheadRune">⛤ Codice Vibrazionale Decrittato ⛤</div>
                 <div class="masthead-name" id="res-name">———</div>
-                <div class="masthead-sub" id="res-date-info">Data di Nascita: —</div>
+                <div class="masthead-sub" id="res-date-info" data-i18n="dateLabelInitial">Data di Nascita: —</div>
             </div>
 
             <!-- NUMEROLOGIA -->
             <div class="section-header">
-                <div class="section-title">◈ Matrice Numerologica</div>
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secNumero">◈ Matrice Numerologica</div>
             </div>
-            <div class="section-sub" id="num-section-sub">Codici vibrazionali estratti dall'analisi pitagorica</div>
+            <div class="section-sub" id="num-section-sub" data-i18n="numeroSub">Codici vibrazionali estratti dall'analisi pitagorica</div>
 
             <div class="numero-grid">
-                <div class="numero-card">
-                    <div class="num-icon">☽</div>
+                <div class="numero-card" tabindex="0">
+                    <div class="num-icon" aria-hidden="true">☽</div>
                     <div class="num-value" id="val-destiny">—</div>
-                    <div class="num-label">Life Path</div>
+                    <div class="num-label" data-i18n="numLifePath">Sentiero di Vita</div>
                     <div class="num-archetype" id="arch-destiny">—</div>
                     <div class="num-expl" id="expl-destiny">—</div>
                 </div>
-                <div class="numero-card">
-                    <div class="num-icon">☿</div>
+                <div class="numero-card" tabindex="0">
+                    <div class="num-icon" aria-hidden="true">☿</div>
                     <div class="num-value" id="val-expression">—</div>
-                    <div class="num-label">Expression</div>
+                    <div class="num-label" data-i18n="numExpression">Espressione</div>
                     <div class="num-archetype" id="arch-expression">—</div>
                     <div class="num-expl" id="expl-expression">—</div>
                 </div>
-                <div class="numero-card">
-                    <div class="num-icon">♀</div>
+                <div class="numero-card" tabindex="0">
+                    <div class="num-icon" aria-hidden="true">♀</div>
                     <div class="num-value" id="val-soul">—</div>
-                    <div class="num-label">Soul Urge</div>
+                    <div class="num-label" data-i18n="numSoulUrge">Impulso dell'Anima</div>
                     <div class="num-archetype" id="arch-soul">—</div>
                     <div class="num-expl" id="expl-soul">—</div>
                 </div>
-                <div class="numero-card">
-                    <div class="num-icon">♄</div>
+                <div class="numero-card" tabindex="0">
+                    <div class="num-icon" aria-hidden="true">♄</div>
                     <div class="num-value" id="val-personality">—</div>
-                    <div class="num-label">Personality</div>
+                    <div class="num-label" data-i18n="numPersonality">Personalità</div>
                     <div class="num-archetype" id="arch-personality">—</div>
                     <div class="num-expl" id="expl-personality">—</div>
                 </div>
@@ -712,627 +1025,1152 @@
 
             <!-- IDENTITÀ COSMICA -->
             <div class="section-header">
-                <div class="section-title">◈ Identità Cosmica</div>
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secIdentity">◈ Identità Cosmica</div>
             </div>
-            <div class="identity-grid" id="identity-grid">
-                <!-- filled by JS -->
-            </div>
+            <div class="identity-grid" id="identity-grid"></div>
 
             <!-- CARTA DEL GIORNO -->
             <div class="section-header">
-                <div class="section-title">◈ Carta del Giorno</div>
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secDaily">◈ Carta del Giorno</div>
             </div>
-            <div class="daily-card-wrap" id="daily-card-wrap">
-                <!-- filled by JS -->
-            </div>
+            <div class="daily-card-wrap" id="daily-card-wrap"></div>
 
             <!-- COMPATIBILITÀ -->
             <div id="compat-section">
                 <div class="section-header">
-                    <div class="section-title">◈ Analisi Compatibilità</div>
+                    <div class="section-title" role="heading" aria-level="2" data-i18n="secCompat">◈ Analisi Compatibilità</div>
                 </div>
-                <div class="compat-result" id="compat-result">
-                    <!-- filled by JS -->
-                </div>
+                <div class="compat-result" id="compat-result"></div>
             </div>
 
             <!-- TAROT -->
             <div class="section-header" style="margin-top:70px">
-                <div class="section-title">◈ I Tre Sigilli Divinatori</div>
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secTarot">◈ I Tre Sigilli Divinatori</div>
             </div>
-            <div class="tarot-instruction">
+            <div class="tarot-instruction" data-i18n="tarotInstruction">
                 Interagisci con i dorsi in successione per rivelare i tuoi Arcani
             </div>
             <div class="tarot-container" id="tarot-board"></div>
 
-            <button class="btn-restart" onclick="resetEngine()">[ Chiudi Connessione · Purga Dati ]</button>
+            <!-- CODICE DEGLI ARCANI (SEQUENZA SACRA) -->
+            <div class="section-header" style="margin-top:70px">
+                <div class="section-title" role="heading" aria-level="2" data-i18n="secSequence">◈ Il Codice degli Arcani Maggiori</div>
+            </div>
+            <p class="section-sub" data-i18n="sequenceIntro" style="margin-top:0; margin-bottom:28px;">La sequenza sacra.</p>
+            <button class="seq-toggle" id="seq-toggle" aria-expanded="false" aria-controls="sequence-list" data-i18n="seqShow">⬡ Rivela la Sequenza Sacra ⬡</button>
+            <ol class="sequence-list" id="sequence-list" hidden></ol>
+
+            <div class="results-actions">
+                <button class="btn-share" id="btn-share" data-i18n="shareBtn">⛤ Condividi il Responso ⛤</button>
+                <button class="btn-restart" id="btn-restart" data-i18n="btnRestart">[ Chiudi Connessione · Purga Dati ]</button>
+            </div>
         </div>
     </main>
 
+    <footer class="site-footer">
+        <span class="footer-brand"><span class="x">⛤</span> DSLV.TECH</span>
+        <span class="footer-sub" data-i18n="headerSub">Secure Uplink — Esoteric Engine v2.0</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
     <script>
-    // ═══════════════════════════════════════════
-    //  PARTICLES ENGINE
-    // ═══════════════════════════════════════════
-    (function() {
+    "use strict";
+
+    /* ═══════════════════════════════════════════
+       MOTION / VISIBILITY HELPERS
+       ═══════════════════════════════════════════ */
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Canvas palette per theme (dark occult vs alchemical manuscript) */
+    const THEME_STYLE = {
+        dark:       { particle: ['#C41E3A', '#D4AF37'], glow: 8, link: '212,175,55', sigil1: '#D4AF37', sigil2: '#C41E3A' },
+        manuscript: { particle: ['#8f2d1e', '#7a5c22'], glow: 0, link: '110,86,50',  sigil1: '#6b5636', sigil2: '#8f2d1e' }
+    };
+    let currentTheme = 'dark';
+    function curStyle() { return THEME_STYLE[currentTheme] || THEME_STYLE.dark; }
+
+    /* ═══════════════════════════════════════════
+       PARTICLES ENGINE  (perf-aware)
+       ═══════════════════════════════════════════ */
+    (function () {
         const c = document.getElementById('particles-canvas');
         const ctx = c.getContext('2d');
-        let W, H, pts;
+        let W, H, pts, rafId = null, linkDist;
+
+        function particleCount() {
+            const area = window.innerWidth * window.innerHeight;
+            // scale density to viewport, capped for perf
+            return Math.max(28, Math.min(90, Math.round(area / 22000)));
+        }
 
         function init() {
             W = c.width = window.innerWidth;
             H = c.height = window.innerHeight;
-            pts = Array.from({length:120}, () => ({
-                x: Math.random()*W, y: Math.random()*H,
-                r: Math.random()*1.2+0.2,
-                vx: (Math.random()-0.5)*0.4,
-                vy: -(Math.random()*0.6+0.2),
-                color: Math.random()>0.75 ? '#C41E3A' : '#D4AF37',
-                alpha: Math.random()*0.6+0.2
+            linkDist = W < 640 ? 0 : 90;               // skip link web on small screens
+            const n = particleCount();
+            const st = curStyle();
+            pts = Array.from({ length: n }, () => ({
+                x: Math.random() * W, y: Math.random() * H,
+                r: Math.random() * 1.2 + 0.2,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: -(Math.random() * 0.6 + 0.2),
+                color: Math.random() > 0.75 ? st.particle[0] : st.particle[1],
+                alpha: Math.random() * 0.6 + 0.2
             }));
         }
 
         function draw() {
-            ctx.clearRect(0,0,W,H);
-            // draw connections
-            for(let i=0; i<pts.length; i++) {
-                for(let j=i+1; j<pts.length; j++) {
-                    const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
-                    const d=Math.sqrt(dx*dx+dy*dy);
-                    if(d<90) {
-                        ctx.beginPath();
-                        ctx.moveTo(pts[i].x, pts[i].y);
-                        ctx.lineTo(pts[j].x, pts[j].y);
-                        ctx.strokeStyle = `rgba(212,175,55,${(1-d/90)*0.06})`;
-                        ctx.lineWidth=0.5;
-                        ctx.stroke();
+            const st = curStyle();
+            ctx.clearRect(0, 0, W, H);
+            if (linkDist) {
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                        const d2 = dx * dx + dy * dy;
+                        if (d2 < linkDist * linkDist) {
+                            const d = Math.sqrt(d2);
+                            ctx.beginPath();
+                            ctx.moveTo(pts[i].x, pts[i].y);
+                            ctx.lineTo(pts[j].x, pts[j].y);
+                            ctx.strokeStyle = `rgba(${st.link},${(1 - d / linkDist) * 0.06})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
                     }
                 }
             }
-            pts.forEach(p => {
-                p.x+=p.vx; p.y+=p.vy;
-                if(p.y<0) p.y=H;
-                if(p.x<0) p.x=W;
-                if(p.x>W) p.x=0;
-                ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-                ctx.fillStyle=p.color; ctx.globalAlpha=p.alpha;
-                ctx.shadowBlur=8; ctx.shadowColor=p.color;
-                ctx.fill(); ctx.globalAlpha=1; ctx.shadowBlur=0;
-            });
-            requestAnimationFrame(draw);
+            for (const p of pts) {
+                p.x += p.vx; p.y += p.vy;
+                if (p.y < 0) p.y = H;
+                if (p.x < 0) p.x = W;
+                if (p.x > W) p.x = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha;
+                ctx.shadowBlur = st.glow; ctx.shadowColor = p.color;
+                ctx.fill(); ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+            }
+            rafId = requestAnimationFrame(draw);
         }
-        window.addEventListener('resize',init);
-        init(); draw();
+
+        function start() { if (rafId == null) rafId = requestAnimationFrame(draw); }
+        function stop() { if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+        // debounced resize
+        let rt;
+        window.addEventListener('resize', () => {
+            clearTimeout(rt);
+            rt = setTimeout(() => { init(); }, 200);
+        });
+
+        // pause when tab is hidden (saves battery/CPU)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stop(); else if (!reduceMotion) start();
+        });
+
+        // recolor particles when theme changes
+        document.addEventListener('themechange', () => {
+            init();
+            if (reduceMotion) draw();
+        });
+
+        init();
+        if (reduceMotion) { draw(); stop(); } // render a single static frame
+        else start();
     })();
 
-    // ═══════════════════════════════════════════
-    //  SIGIL CANVAS
-    // ═══════════════════════════════════════════
-    (function() {
+    /* ═══════════════════════════════════════════
+       SIGIL CANVAS
+       ═══════════════════════════════════════════ */
+    (function () {
         const c = document.getElementById('sigil-canvas');
         const ctx = c.getContext('2d');
         const SIZE = 600;
         c.width = SIZE; c.height = SIZE;
-        const cx=SIZE/2, cy=SIZE/2;
-        let rot=0;
+        const cx = SIZE / 2, cy = SIZE / 2;
+        let rot = 0, rafId = null;
+
         function drawSigil() {
-            ctx.clearRect(0,0,SIZE,SIZE);
-            ctx.save(); ctx.translate(cx,cy);
+            const st = curStyle();
+            ctx.clearRect(0, 0, SIZE, SIZE);
+            ctx.save(); ctx.translate(cx, cy);
 
-            // Outer circle
-            ctx.rotate(rot*0.3);
-            ctx.beginPath(); ctx.arc(0,0,260,0,Math.PI*2);
-            ctx.strokeStyle='#D4AF37'; ctx.lineWidth=1; ctx.stroke();
+            ctx.rotate(rot * 0.3);
+            ctx.beginPath(); ctx.arc(0, 0, 260, 0, Math.PI * 2);
+            ctx.strokeStyle = st.sigil1; ctx.lineWidth = 1; ctx.stroke();
 
-            // Pentagram
             ctx.save(); ctx.rotate(rot);
             ctx.beginPath();
-            for(let i=0; i<5; i++) {
-                const a=(i*4*(Math.PI*2/5))-Math.PI/2;
-                const x=Math.cos(a)*240, y=Math.sin(a)*240;
-                i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+            for (let i = 0; i < 5; i++) {
+                const a = (i * 4 * (Math.PI * 2 / 5)) - Math.PI / 2;
+                const x = Math.cos(a) * 240, y = Math.sin(a) * 240;
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
             }
             ctx.closePath();
-            ctx.strokeStyle='#D4AF37'; ctx.lineWidth=1.5; ctx.stroke();
+            ctx.strokeStyle = st.sigil1; ctx.lineWidth = 1.5; ctx.stroke();
             ctx.restore();
 
-            // Inner circle
-            ctx.rotate(-rot*0.5);
-            ctx.beginPath(); ctx.arc(0,0,160,0,Math.PI*2);
-            ctx.strokeStyle='#C41E3A'; ctx.lineWidth=0.8; ctx.stroke();
+            ctx.rotate(-rot * 0.5);
+            ctx.beginPath(); ctx.arc(0, 0, 160, 0, Math.PI * 2);
+            ctx.strokeStyle = st.sigil2; ctx.lineWidth = 0.8; ctx.stroke();
 
-            // Inner heptagram
-            ctx.save(); ctx.rotate(-rot*0.8);
+            ctx.save(); ctx.rotate(-rot * 0.8);
             ctx.beginPath();
-            for(let i=0; i<7; i++) {
-                const a=(i*3*(Math.PI*2/7))-Math.PI/2;
-                const x=Math.cos(a)*140, y=Math.sin(a)*140;
-                i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+            for (let i = 0; i < 7; i++) {
+                const a = (i * 3 * (Math.PI * 2 / 7)) - Math.PI / 2;
+                const x = Math.cos(a) * 140, y = Math.sin(a) * 140;
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
             }
             ctx.closePath();
-            ctx.strokeStyle='#D4AF37'; ctx.lineWidth=0.8; ctx.stroke();
+            ctx.strokeStyle = st.sigil1; ctx.lineWidth = 0.8; ctx.stroke();
             ctx.restore();
 
-            // Rune marks on outer circle
-            for(let i=0; i<12; i++) {
-                const a=(i*(Math.PI*2/12))+rot*0.2;
-                const x=Math.cos(a)*260, y=Math.sin(a)*260;
-                ctx.fillStyle='#D4AF37';
-                ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+            for (let i = 0; i < 12; i++) {
+                const a = (i * (Math.PI * 2 / 12)) + rot * 0.2;
+                const x = Math.cos(a) * 260, y = Math.sin(a) * 260;
+                ctx.fillStyle = st.sigil1;
+                ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
             }
 
             ctx.restore();
-            rot+=0.003;
-            requestAnimationFrame(drawSigil);
+            rot += 0.003;
+            rafId = requestAnimationFrame(drawSigil);
         }
-        drawSigil();
+
+        function start() { if (rafId == null) rafId = requestAnimationFrame(drawSigil); }
+        function stop() { if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stop(); else if (!reduceMotion) start();
+        });
+
+        document.addEventListener('themechange', () => { if (reduceMotion) drawSigil(); });
+
+        if (reduceMotion) drawSigil(), stop(); else start();
     })();
 
-    // ═══════════════════════════════════════════
-    //  GLITCH TEXT
-    // ═══════════════════════════════════════════
+    /* ═══════════════════════════════════════════
+       GLITCH / SCRAMBLE TEXT
+       ═══════════════════════════════════════════ */
     const CHARS = "XABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%⛤✦◈⬡⌘";
-    function scramble(el, final, dur=900) {
-        const start=Date.now(), len=final.length;
-        const iv=setInterval(()=>{
-            const p=Math.min((Date.now()-start)/dur, 1);
-            if(p>=1) { clearInterval(iv); el.textContent=final; return; }
-            el.textContent = Array.from({length:len},(_,i)=>
-                i<p*len ? final[i] : CHARS[Math.floor(Math.random()*CHARS.length)]
+    function scramble(el, final, dur = 900) {
+        if (!el) return;
+        if (reduceMotion) { el.textContent = final; return; }
+        const start = Date.now(), len = final.length;
+        const iv = setInterval(() => {
+            const p = Math.min((Date.now() - start) / dur, 1);
+            if (p >= 1) { clearInterval(iv); el.textContent = final; return; }
+            el.textContent = Array.from({ length: len }, (_, i) =>
+                i < p * len ? final[i] : CHARS[Math.floor(Math.random() * CHARS.length)]
             ).join('');
         }, 28);
     }
 
-    // ═══════════════════════════════════════════
-    //  NUMEROLOGY ENGINE
-    // ═══════════════════════════════════════════
+    /* ═══════════════════════════════════════════
+       LANGUAGE-NEUTRAL DATA (symbols / algorithms)
+       ═══════════════════════════════════════════ */
+    const ARCANA_META = [
+        { id: "0",     sym: "🃏" }, { id: "I",    sym: "⚗️" }, { id: "II",   sym: "🌙" },
+        { id: "III",   sym: "🌿" }, { id: "IV",   sym: "♜"  }, { id: "V",    sym: "⛪" },
+        { id: "VI",    sym: "⚖️" }, { id: "VII",  sym: "🐎" }, { id: "VIII", sym: "🦁" },
+        { id: "IX",    sym: "🕯️" }, { id: "X",    sym: "☸️" }, { id: "XI",   sym: "⚖️" },
+        { id: "XII",   sym: "🔄" }, { id: "XIII", sym: "🌑" }, { id: "XIV",  sym: "🌊" },
+        { id: "XV",    sym: "⛓️" }, { id: "XVI",  sym: "⚡"  }, { id: "XVII", sym: "✨" },
+        { id: "XVIII", sym: "🌕" }, { id: "XIX",  sym: "☀️" }, { id: "XX",   sym: "📯" },
+        { id: "XXI",   sym: "🌍" }
+    ];
+
+    const ZODIAC_SYM = ['♑','♒','♓','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑'];
+    const ZODIAC_ELEMENT = ['earth','air','water','fire','earth','air','water','fire','earth','air','water','fire','earth'];
+    const ZODIAC_BOUNDARIES = [[1,20],[2,19],[3,21],[4,20],[5,21],[6,21],[7,23],[8,23],[9,23],[10,23],[11,22],[12,22]];
+
+    const CHINESE_SYM = ['🐀','🐂','🐅','🐇','🐉','🐍','🐎','🐐','🐒','🐓','🐕','🐖'];
+    const CHAKRA_SYM = { solar:'🟡', heart:'💚', throat:'🔵', root:'🔴', thirdEye:'🟣', crown:'⬆', sacral:'🟠' };
+
+    const ELEMENT_BY_LIFEPATH = {
+        1:'fire',2:'water',3:'fire',4:'earth',5:'air',6:'earth',
+        7:'air',8:'earth',9:'water',11:'fire',22:'earth',33:'water'
+    };
+    const CHAKRA_BY_SOUL = {
+        1:'solar',2:'heart',3:'throat',4:'root',5:'thirdEye',6:'heart',
+        7:'crown',8:'root',9:'crown',11:'thirdEye',22:'sacral',33:'crown'
+    };
+
+    /* ═══════════════════════════════════════════
+       NUMEROLOGY ENGINE
+       ═══════════════════════════════════════════ */
     const NE = {
-        table:{a:1,j:1,s:1,b:2,k:2,t:2,c:3,l:3,u:3,d:4,m:4,v:4,e:5,n:5,w:5,f:6,o:6,x:6,g:7,p:7,y:7,h:8,q:8,z:8,i:9,r:9},
-        vowels:new Set(['a','e','i','o','u']),
-        masters:new Set([11,22,33]),
-
-        data: {
-            1: { arch:"Il Pioniere", desc:"Forza di volontà assoluta e istinto primordiale. Sei una scintilla creatrice nata per guidare, spezzare catene e inaugurare nuovi cicli. Il tuo karma è l'indipendenza totale.", color:"#FFD700" },
-            2: { arch:"Il Mediatore", desc:"Maestro di diplomazia occulta. Percepisci le tensioni invisibili tra le persone e le neutralizzi con precisione chirurgica. La tua forza si nasconde nell'empatia, non nel dominio.", color:"#C0C0C0" },
-            3: { arch:"Il Comunicatore", desc:"Esplosione di energia creativa e carisma magnetico. Il tuo pensiero è un labirinto luminoso. Arte, parola, caos creativo: il mondo ti appartiene ogni volta che prendi la parola.", color:"#FFA500" },
-            4: { arch:"Il Costruttore", desc:"Architetto dell'ordine cosmico. Dove altri vedono caos, tu proietti struttura. La tua mente è una macchina che trasforma l'entropia in fondamenta. Stabile. Indistruttibile.", color:"#8B4513" },
-            5: { arch:"Il Visionario", desc:"La libertà è il tuo ossigeno. Dinamico, adattabile, imprevedibile. La tua coscienza non tollera confini di sistema. Sei l'agente del cambiamento perpetuo.", color:"#00CED1" },
-            6: { arch:"Il Custode", desc:"Compassione totale e armonia profonda. Sei il polo magnetico attorno a cui gli altri orbitano. Proteggi, guarisci, bilanci gli opposti con una grazia che gli altri non riescono nemmeno a percepire.", color:"#FF69B4" },
-            7: { arch:"Il Filosofo", desc:"Analitico e mistico al tempo stesso. Cerchi verità cosmiche nascosti sotto la superficie di ogni cosa. La solitudine è il tuo laboratorio. Il dubbio è il tuo metodo sacro.", color:"#9370DB" },
-            8: { arch:"Il Manifestatore", desc:"Dominio assoluto sul piano materiale. Possiedi un legame diretto con le forze del potere e dell'esecuzione. La ricchezza e l'autorità non sono obiettivi: sono la tua frequenza naturale.", color:"#B8860B" },
-            9: { arch:"L'Umanitario", desc:"Coscienza espansa oltre i confini dell'io. Completi i grandi cicli karmici. La tua compassione non ha oggetto: è universale, incondizionata, spesso incompresa dai più.", color:"#DC143C" },
-            11: { arch:"[ MASTER ] L'Illuminato", desc:"Numero maestro. Intuito paranormale e sensibilità estrema al campo invisibile. Sei un ponte tra la dimensione ordinaria e quella soprannaturale. Portare questa luce ha il suo costo.", color:"#FFD700" },
-            22: { arch:"[ MASTER ] Il Maestro d'Opera", desc:"Il più potente numero di manifestazione. Hai la visione del visionario e la concretezza del costruttore. Sei capace di trasformare idee cosmiche in architettura reale.", color:"#FFD700" },
-            33: { arch:"[ MASTER ] Il Guaritore Universale", desc:"La frequenza più alta. Tutta la tua energia è devota all'innalzamento vibrazionale del collettivo. Compassione senza limiti, sacrificio consapevole, amore assoluto.", color:"#FFD700" }
-        },
-
+        table: { a:1,j:1,s:1,b:2,k:2,t:2,c:3,l:3,u:3,d:4,m:4,v:4,e:5,n:5,w:5,f:6,o:6,x:6,g:7,p:7,y:7,h:8,q:8,z:8,i:9,r:9 },
+        vowels: new Set(['a','e','i','o','u']),
+        masters: new Set([11,22,33]),
         reduce(n) {
-            if(this.masters.has(n)||n<10) return n;
-            return this.reduce(String(n).split('').reduce((a,c)=>a+parseInt(c),0));
+            if (this.masters.has(n) || n < 10) return n;
+            return this.reduce(String(n).split('').reduce((a,c)=>a+parseInt(c,10),0));
         },
         calcStr(str, type) {
-            let sum=0;
-            for(const c of str.toLowerCase().replace(/[^a-z]/g,'')) {
-                const isV=this.vowels.has(c);
-                if(type==='v'&&!isV) continue;
-                if(type==='c'&&isV) continue;
-                sum+=this.table[c]||0;
+            let sum = 0;
+            for (const c of str.toLowerCase().normalize('NFD').replace(/[^a-z]/g,'')) {
+                const isV = this.vowels.has(c);
+                if (type === 'v' && !isV) continue;
+                if (type === 'c' && isV) continue;
+                sum += this.table[c] || 0;
             }
             return this.reduce(sum);
         },
         calcDate(ds) {
-            const digits=ds.replace(/\D/g,'').split('').map(Number);
+            const digits = ds.replace(/\D/g,'').split('').map(Number);
             return this.reduce(digits.reduce((a,c)=>a+c,0));
-        },
-        get(n) { return this.data[n] || this.data[((n-1)%9)+1] || this.data[1]; }
-    };
-
-    // ═══════════════════════════════════════════
-    //  TAROT ENGINE
-    // ═══════════════════════════════════════════
-    const TE = {
-        arcana: [
-            {id:"0",  n:"The Fool",         sym:"🃏", e:"New beginnings · Innocence",  kw:"Salto nel vuoto"},
-            {id:"I",  n:"The Magician",     sym:"⚗️", e:"Willpower · Manifestation",   kw:"Tutto è possibile"},
-            {id:"II", n:"High Priestess",   sym:"🌙", e:"Intuition · Deep mystery",    kw:"Ascolta il silenzio"},
-            {id:"III",n:"The Empress",      sym:"🌿", e:"Creation · Abundance",        kw:"Fertilità cosmica"},
-            {id:"IV", n:"The Emperor",      sym:"♜",  e:"Structure · Authority",       kw:"Ordine assoluto"},
-            {id:"V",  n:"The Hierophant",   sym:"⛪", e:"Tradition · Sacred knowledge",kw:"Il codice antico"},
-            {id:"VI", n:"The Lovers",       sym:"⚖️", e:"Choice · Duality · Union",    kw:"La scelta definitiva"},
-            {id:"VII",n:"The Chariot",      sym:"🐎", e:"Victory through control",     kw:"Dominio della forza"},
-            {id:"VIII",n:"Strength",        sym:"🦁", e:"Inner power · Restraint",     kw:"La forza interiore"},
-            {id:"IX", n:"The Hermit",       sym:"🕯️", e:"Isolation · Ancient wisdom",  kw:"La luce solitaria"},
-            {id:"X",  n:"Wheel of Fortune", sym:"☸️", e:"Destiny · Cycles · Fate",     kw:"La ruota gira"},
-            {id:"XI", n:"Justice",          sym:"⚖️", e:"Karma · Cold truth",          kw:"Il verdetto cosmico"},
-            {id:"XII",n:"The Hanged Man",   sym:"🔄", e:"Sacrifice · Suspension",      kw:"Fermarsi per vedere"},
-            {id:"XIII",n:"Death",           sym:"🌑", e:"Complete transformation",     kw:"La metamorfosi"},
-            {id:"XIV",n:"Temperance",       sym:"🌊", e:"Alchemy · Synthesis",         kw:"Il flusso perfetto"},
-            {id:"XV", n:"The Devil",        sym:"⛓️", e:"Addiction · Shadow self",     kw:"Le catene invisibili"},
-            {id:"XVI",n:"The Tower",        sym:"⚡", e:"Disaster · False idols fall", kw:"La distruzione necessaria"},
-            {id:"XVII",n:"The Star",        sym:"✨", e:"Hope · Cosmic connection",    kw:"La guida celeste"},
-            {id:"XVIII",n:"The Moon",       sym:"🌕", e:"Illusion · Subconscious",     kw:"L'ombra che parla"},
-            {id:"XIX",n:"The Sun",          sym:"☀️", e:"Brilliance · Life energy",    kw:"La luce pura"},
-            {id:"XX", n:"Judgement",        sym:"📯", e:"Awakening · Final call",      kw:"Il risveglio"},
-            {id:"XXI",n:"The World",        sym:"🌍", e:"Completion · Wholeness",      kw:"Il cerchio si chiude"}
-        ],
-        draw(n=3, seed=0) {
-            const deck=[...this.arcana];
-            const r=[];
-            // seeded shuffle using seed
-            for(let i=deck.length-1;i>0;i--){
-                seed=(seed*1664525+1013904223)&0xFFFFFFFF;
-                const j=Math.abs(seed)%(i+1);
-                [deck[i],deck[j]]=[deck[j],deck[i]];
-            }
-            for(let i=0;i<Math.min(n,deck.length);i++){
-                seed=(seed*1664525+1013904223)&0xFFFFFFFF;
-                const rev=Math.abs(seed)%10<2;
-                r.push({...deck[i], rev});
-            }
-            return r;
-        },
-        dailyCard(seed) {
-            const idx=Math.abs(seed)%this.arcana.length;
-            seed=(seed*1664525+1013904223)&0xFFFFFFFF;
-            const rev=Math.abs(seed)%10<3;
-            return {...this.arcana[idx], rev};
         }
     };
 
-    // ═══════════════════════════════════════════
-    //  ZODIAC & COSMIC DATA
-    // ═══════════════════════════════════════════
-    function getWesternZodiac(dob) {
-        const [y,m,d] = dob.split('-').map(Number);
-        const signs=[
-            {n:"Capricorno",sym:"♑",el:"🌍 Terra",stone:"Granato",chakra:"Radice",ch:"⬇"},
-            {n:"Acquario",sym:"♒",el:"💨 Aria",stone:"Ametista",chakra:"Terzo Occhio",ch:"🟣"},
-            {n:"Pesci",sym:"♓",el:"💧 Acqua",stone:"Acquamarina",chakra:"Coroa",ch:"⬆"},
-            {n:"Ariete",sym:"♈",el:"🔥 Fuoco",stone:"Diamante",chakra:"Plesso Solare",ch:"🟡"},
-            {n:"Toro",sym:"♉",el:"🌍 Terra",stone:"Smeraldo",chakra:"Cuore",ch:"💚"},
-            {n:"Gemelli",sym:"♊",el:"💨 Aria",stone:"Agata",chakra:"Gola",ch:"🔵"},
-            {n:"Cancro",sym:"♋",el:"💧 Acqua",stone:"Perla",chakra:"Sacrale",ch:"🟠"},
-            {n:"Leone",sym:"♌",el:"🔥 Fuoco",stone:"Rubino",chakra:"Plesso Solare",ch:"🟡"},
-            {n:"Vergine",sym:"♍",el:"🌍 Terra",stone:"Zaffiro",chakra:"Gola",ch:"🔵"},
-            {n:"Bilancia",sym:"♎",el:"💨 Aria",stone:"Opale",chakra:"Cuore",ch:"💚"},
-            {n:"Scorpione",sym:"♏",el:"💧 Acqua",stone:"Topazio",chakra:"Sacrale",ch:"🟠"},
-            {n:"Sagittario",sym:"♐",el:"🔥 Fuoco",stone:"Turchese",chakra:"Radice",ch:"⬇"},
-            {n:"Capricorno",sym:"♑",el:"🌍 Terra",stone:"Granato",chakra:"Radice",ch:"⬇"}
-        ];
-        const boundaries=[[1,20],[2,19],[3,21],[4,20],[5,21],[6,21],[7,23],[8,23],[9,23],[10,23],[11,22],[12,22]];
-        const mi=m-1;
-        return m===1&&d<20 ? signs[0] : d<boundaries[mi][1] ? signs[mi] : signs[mi+1];
+    /* Seeded PRNG helpers (unsigned) */
+    function nextSeed(s) { return (Math.imul(s, 1664525) + 1013904223) >>> 0; }
+
+    function drawCards(n, seed) {
+        seed = seed >>> 0;
+        const order = Array.from({ length: ARCANA_META.length }, (_, i) => i);
+        for (let i = order.length - 1; i > 0; i--) {
+            seed = nextSeed(seed);
+            const j = seed % (i + 1);
+            [order[i], order[j]] = [order[j], order[i]];
+        }
+        const res = [];
+        for (let i = 0; i < Math.min(n, order.length); i++) {
+            seed = nextSeed(seed);
+            res.push({ idx: order[i], rev: (seed % 10) < 2 });
+        }
+        return res;
+    }
+    function dailyDraw(seed) {
+        seed = seed >>> 0;
+        const idx = seed % ARCANA_META.length;
+        seed = nextSeed(seed);
+        return { idx, rev: (seed % 10) < 3 };
     }
 
-    function getChineseZodiac(year) {
-        const animals=[
-            {n:"Ratto",sym:"🐀",trait:"Intelligente, adattabile"},
-            {n:"Bue",sym:"🐂",trait:"Laborioso, affidabile"},
-            {n:"Tigre",sym:"🐅",trait:"Coraggioso, competitivo"},
-            {n:"Coniglio",sym:"🐇",trait:"Tranquillo, elegante"},
-            {n:"Drago",sym:"🐉",trait:"Energico, carismatico"},
-            {n:"Serpente",sym:"🐍",trait:"Saggio, enigmatico"},
-            {n:"Cavallo",sym:"🐎",trait:"Energico, indipendente"},
-            {n:"Capra",sym:"🐐",trait:"Gentile, creativo"},
-            {n:"Scimmia",sym:"🐒",trait:"Intelligente, versatile"},
-            {n:"Gallo",sym:"🐓",trait:"Osservatore, puntuale"},
-            {n:"Cane",sym:"🐕",trait:"Leale, onesto"},
-            {n:"Maiale",sym:"🐖",trait:"Compassionevole, generoso"}
-        ];
-        return animals[(year-4)%12];
+    /* ═══════════════════════════════════════════
+       ZODIAC / CHINESE INDICES
+       ═══════════════════════════════════════════ */
+    function westernZodiacIdx(dob) {
+        const [, m, d] = dob.split('-').map(Number);
+        const mi = m - 1;
+        if (m === 1 && d < 20) return 0;
+        return d < ZODIAC_BOUNDARIES[mi][1] ? mi : mi + 1;
+    }
+    function chineseZodiacIdx(year) {
+        return ((year - 4) % 12 + 12) % 12;
     }
 
-    function getElement(lifepath) {
-        const map={
-            1:"🔥 Fuoco",2:"🌊 Acqua",3:"🔥 Fuoco",4:"🌍 Terra",
-            5:"💨 Aria",6:"🌍 Terra",7:"💨 Aria",8:"🌍 Terra",
-            9:"🌊 Acqua",11:"🔥 Fuoco",22:"🌍 Terra",33:"🌊 Acqua"
-        };
-        return map[lifepath]||"⚡ Etere";
-    }
-
-    function getChakra(soul) {
-        const map={
-            1:{n:"Plesso Solare",sym:"🟡",color:"#FFD700"},
-            2:{n:"Cuore",sym:"💚",color:"#00C851"},
-            3:{n:"Gola",sym:"🔵",color:"#0099CC"},
-            4:{n:"Radice",sym:"🔴",color:"#CC0000"},
-            5:{n:"Terzo Occhio",sym:"🟣",color:"#7B2FBE"},
-            6:{n:"Cuore",sym:"💚",color:"#00C851"},
-            7:{n:"Corona",sym:"⬆",color:"#9B59B6"},
-            8:{n:"Radice",sym:"🔴",color:"#CC0000"},
-            9:{n:"Corona",sym:"⬆",color:"#9B59B6"},
-            11:{n:"Terzo Occhio",sym:"🟣",color:"#7B2FBE"},
-            22:{n:"Sacrale",sym:"🟠",color:"#FF8C00"},
-            33:{n:"Corona",sym:"⬆",color:"#9B59B6"}
-        };
-        return map[soul]||{n:"Sacrale",sym:"🟠",color:"#FF8C00"};
-    }
-
-    function getLuckyStone(expr) {
-        const stones={
-            1:"Rubino",2:"Perla di Luna",3:"Topazio",4:"Onice Nero",
-            5:"Acquamarina",6:"Smeraldo",7:"Ametista",8:"Occhio di Tigre",
-            9:"Granato Rosso",11:"Pietra di Luna",22:"Diamante",33:"Lapislazzuli"
-        };
-        return stones[expr]||"Quarzo";
-    }
-
-    // ═══════════════════════════════════════════
-    //  COMPATIBILITY
-    // ═══════════════════════════════════════════
+    /* ═══════════════════════════════════════════
+       COMPATIBILITY  (returns score + level index)
+       ═══════════════════════════════════════════ */
+    const COMPAT_THRESHOLDS = [80, 65, 45, 0];
     function calcCompatibility(lp1, lp2) {
-        const harmonic=[[1,5],[1,3],[2,6],[2,4],[3,9],[4,8],[5,7],[6,9],[7,11],[8,22]];
-        const conflict=[[1,4],[2,9],[3,8],[4,5],[6,7]];
-        let score=50;
-        const pair=[Math.min(lp1,lp2),Math.max(lp1,lp2)];
-        if(harmonic.some(h=>h[0]===pair[0]&&h[1]===pair[1])) score+=30;
-        if(conflict.some(h=>h[0]===pair[0]&&h[1]===pair[1])) score-=20;
-        if(lp1===lp2) score+=15;
-        const sum=NE.reduce(lp1+lp2);
-        score+=sum*2;
-        score=Math.min(99,Math.max(10,score));
-
-        const levels=[
-            {min:80,label:"Risonanza Cosmica Totale",desc:"Le vostre frequenze vibrazionali si fondono in modo raro e potente. Un'allineamento che trascende il caso."},
-            {min:65,label:"Alta Sinergia Karmica",desc:"I vostri percorsi si integrano profondamente. Esistono tensioni che alimentano la crescita reciproca."},
-            {min:45,label:"Equilibrio Dinamico",desc:"Una connessione complessa con forti potenziali. Richiede consapevolezza e lavoro interiore condiviso."},
-            {min:0,label:"Sfida Evolutiva",desc:"La polarità tra le vostre energie genera attrito. Ma l'attrito produce luce. La relazione è un catalizzatore."}
-        ];
-        const level=levels.find(l=>score>=l.min)||levels[levels.length-1];
-        return {score, ...level, synergy: NE.reduce(lp1+lp2)};
+        const harmonic = [[1,5],[1,3],[2,6],[2,4],[3,9],[4,8],[5,7],[6,9],[7,11],[8,22]];
+        const conflict = [[1,4],[2,9],[3,8],[4,5],[6,7]];
+        let score = 50;
+        const pair = [Math.min(lp1,lp2), Math.max(lp1,lp2)];
+        if (harmonic.some(h=>h[0]===pair[0]&&h[1]===pair[1])) score += 30;
+        if (conflict.some(h=>h[0]===pair[0]&&h[1]===pair[1])) score -= 20;
+        if (lp1 === lp2) score += 15;
+        const synergy = NE.reduce(lp1 + lp2);
+        score += synergy * 2;
+        score = Math.min(99, Math.max(10, score));
+        const levelIdx = COMPAT_THRESHOLDS.findIndex(t => score >= t);
+        return { score, levelIdx: levelIdx < 0 ? COMPAT_THRESHOLDS.length - 1 : levelIdx, synergy };
     }
 
-    // ═══════════════════════════════════════════
-    //  LOADER SEQUENCE
-    // ═══════════════════════════════════════════
-    const logLines = [
-        "Inizializzazione sequenza animica...",
-        "Calcolo frequenza numerologica...",
-        "Decrittazione codici vibrazionali...",
-        "Allineamento arcani maggiori...",
-        "Mappatura chakra dominante...",
-        "Estrazione sigilli divinatori...",
-        "Protocollo esoterico completato."
-    ];
-    function runLoader(cb) {
-        const logEl=document.getElementById('loader-log');
-        let i=0;
-        function next() {
-            if(i>=logLines.length) { setTimeout(cb,300); return; }
-            logEl.textContent=logLines[i++];
-            setTimeout(next, 350);
+    /* ═══════════════════════════════════════════
+       TRANSLATIONS (IT / EN)
+       ═══════════════════════════════════════════ */
+    const T = {
+        it: {
+            code: 'it', locale: 'it-IT', docTitle: 'ARCANUM // DSLV.TECH',
+            ui: {
+                headerSub: 'Secure Uplink — Esoteric Engine v2.0',
+                panelEyebrow: '⬡ Inizializzazione Protocollo Animico ⬡',
+                desc: "Decrittazione dell'Entità Vibrazionale attraverso calcolo numerico Pitagorico, lettura degli Arcani Maggiori e mappatura cosmica della coscienza.",
+                labelName: '◈ Designazione Soggetto (Nome Completo)',
+                phName: '— nome —',
+                labelDob: '◈ Punto di Origine (Data di Nascita)',
+                sepCompat: '⬡ compatibilità opzionale ⬡',
+                compatAdd: '+ Aggiungi Secondo Soggetto per Analisi di Compatibilità',
+                compatRemove: '− Rimuovi Secondo Soggetto',
+                labelName2: '◈ Designazione Soggetto B (Nome)',
+                labelDob2: '◈ Punto di Origine Soggetto B',
+                btnSubmit: '⬡ Avvia Algoritmo Esoterico ⬡',
+                loaderText: 'Elaborazione in corso...',
+                mastheadRune: '⛤ Codice Vibrazionale Decrittato ⛤',
+                secNumero: '◈ Matrice Numerologica',
+                numeroSub: "Codici vibrazionali estratti dall'analisi pitagorica",
+                numLifePath: 'Sentiero di Vita', numExpression: 'Espressione',
+                numSoulUrge: "Impulso dell'Anima", numPersonality: 'Personalità',
+                secIdentity: '◈ Identità Cosmica',
+                idZodiac: 'Segno Zodiacale', idChinese: 'Zodiaco Cinese',
+                idChakra: 'Chakra Dominante', idStone: 'Pietra Portafortuna',
+                elementLabel: 'Elemento', energyLabel: 'Energia', stoneSub: 'Abbinata al numero',
+                secDaily: '◈ Carta del Giorno', dailyEyebrow: '⛤ Arcano del Giorno —',
+                dailyUpright: '[ DRITTA — Energia Diretta ]', dailyReversed: '[ ROVESCIATA — Energia Bloccata ]',
+                dailyDescUp: 'Oggi il tuo campo vibrazionale è allineato con il principio di <em>{kw}</em>. Agisci con questa consapevolezza.',
+                dailyDescRev: "L'energia di questa carta è invertita oggi: esamina le resistenze interiori legate a <em>{kw}</em>.",
+                secCompat: '◈ Analisi Compatibilità', compatSynergy: 'Sinergia',
+                secTarot: '◈ I Tre Sigilli Divinatori',
+                tarotInstruction: 'Interagisci con i dorsi in successione per rivelare i tuoi Arcani',
+                tUpright: '[ DRITTA ]', tReversed: '[ ROVESCIATA ]',
+                keyLabel: 'Chiave', secSequence: '◈ Il Codice degli Arcani Maggiori',
+                sequenceIntro: "Letti in ordine da I a XXI, gli Arcani compongono un'unica frase iniziatica sul cammino dell'anima. La prima parola è la Volontà.",
+                seqShow: '⬡ Rivela la Sequenza Sacra ⬡', seqHide: '⬡ Cela la Sequenza ⬡',
+                shareBtn: '⛤ Condividi il Responso ⛤',
+                shareTitle: 'Il mio responso ARCANUM',
+                shareText: 'La mia decrittazione vibrazionale — {name}',
+                shareCopied: '✦ Link copiato negli appunti ✦',
+                shareError: 'Impossibile copiare il link',
+                btnRestart: '[ Chiudi Connessione · Purga Dati ]',
+                dateInfo: 'Nato/a il {d}/{m}/{y} · Anno {yr} · Ciclo {cy}',
+                dateLabelInitial: 'Data di Nascita: —',
+                errName: 'Inserisci un nome valido (min. 2 lettere).',
+                errDob: 'Inserisci una data di nascita valida (non futura).'
+            },
+            loader: [
+                'Inizializzazione sequenza animica...',
+                'Calcolo frequenza numerologica...',
+                'Decrittazione codici vibrazionali...',
+                'Allineamento arcani maggiori...',
+                'Mappatura chakra dominante...',
+                'Estrazione sigilli divinatori...',
+                'Protocollo esoterico completato.'
+            ],
+            numero: {
+                1:{arch:"Il Pioniere",desc:"Forza di volontà assoluta e istinto primordiale. Sei una scintilla creatrice nata per guidare, spezzare catene e inaugurare nuovi cicli. Il tuo karma è l'indipendenza totale."},
+                2:{arch:"Il Mediatore",desc:"Maestro di diplomazia occulta. Percepisci le tensioni invisibili tra le persone e le neutralizzi con precisione chirurgica. La tua forza si nasconde nell'empatia, non nel dominio."},
+                3:{arch:"Il Comunicatore",desc:"Esplosione di energia creativa e carisma magnetico. Il tuo pensiero è un labirinto luminoso. Arte, parola, caos creativo: il mondo ti appartiene ogni volta che prendi la parola."},
+                4:{arch:"Il Costruttore",desc:"Architetto dell'ordine cosmico. Dove altri vedono caos, tu proietti struttura. La tua mente è una macchina che trasforma l'entropia in fondamenta. Stabile. Indistruttibile."},
+                5:{arch:"Il Visionario",desc:"La libertà è il tuo ossigeno. Dinamico, adattabile, imprevedibile. La tua coscienza non tollera confini di sistema. Sei l'agente del cambiamento perpetuo."},
+                6:{arch:"Il Custode",desc:"Compassione totale e armonia profonda. Sei il polo magnetico attorno a cui gli altri orbitano. Proteggi, guarisci, bilanci gli opposti con una grazia che gli altri non riescono nemmeno a percepire."},
+                7:{arch:"Il Filosofo",desc:"Analitico e mistico al tempo stesso. Cerchi verità cosmiche nascoste sotto la superficie di ogni cosa. La solitudine è il tuo laboratorio. Il dubbio è il tuo metodo sacro."},
+                8:{arch:"Il Manifestatore",desc:"Dominio assoluto sul piano materiale. Possiedi un legame diretto con le forze del potere e dell'esecuzione. La ricchezza e l'autorità non sono obiettivi: sono la tua frequenza naturale."},
+                9:{arch:"L'Umanitario",desc:"Coscienza espansa oltre i confini dell'io. Completi i grandi cicli karmici. La tua compassione non ha oggetto: è universale, incondizionata, spesso incompresa dai più."},
+                11:{arch:"[ MASTER ] L'Illuminato",desc:"Numero maestro. Intuito paranormale e sensibilità estrema al campo invisibile. Sei un ponte tra la dimensione ordinaria e quella soprannaturale. Portare questa luce ha il suo costo."},
+                22:{arch:"[ MASTER ] Il Maestro d'Opera",desc:"Il più potente numero di manifestazione. Hai la visione del visionario e la concretezza del costruttore. Sei capace di trasformare idee cosmiche in architettura reale."},
+                33:{arch:"[ MASTER ] Il Guaritore Universale",desc:"La frequenza più alta. Tutta la tua energia è devota all'innalzamento vibrazionale del collettivo. Compassione senza limiti, sacrificio consapevole, amore assoluto."}
+            },
+            tarot: [
+                {n:"Il Matto",e:"Nuovi inizi · Innocenza",kw:"Salto nel vuoto"},
+                {n:"Il Mago",e:"Volontà · Manifestazione",kw:"Tutto è possibile"},
+                {n:"La Papessa",e:"Intuizione · Mistero profondo",kw:"Ascolta il silenzio"},
+                {n:"L'Imperatrice",e:"Creazione · Abbondanza",kw:"Fertilità cosmica"},
+                {n:"L'Imperatore",e:"Struttura · Autorità",kw:"Ordine assoluto"},
+                {n:"Il Papa",e:"Tradizione · Sapere sacro",kw:"Il codice antico"},
+                {n:"Gli Amanti",e:"Scelta · Dualità · Unione",kw:"La scelta definitiva"},
+                {n:"Il Carro",e:"Vittoria tramite controllo",kw:"Dominio della forza"},
+                {n:"La Forza",e:"Potere interiore · Autocontrollo",kw:"La forza interiore"},
+                {n:"L'Eremita",e:"Isolamento · Saggezza antica",kw:"La luce solitaria"},
+                {n:"La Ruota della Fortuna",e:"Destino · Cicli · Fato",kw:"La ruota gira"},
+                {n:"La Giustizia",e:"Karma · Verità fredda",kw:"Il verdetto cosmico"},
+                {n:"L'Appeso",e:"Sacrificio · Sospensione",kw:"Fermarsi per vedere"},
+                {n:"La Morte",e:"Trasformazione completa",kw:"La metamorfosi"},
+                {n:"La Temperanza",e:"Alchimia · Sintesi",kw:"Il flusso perfetto"},
+                {n:"Il Diavolo",e:"Dipendenza · Ombra interiore",kw:"Le catene invisibili"},
+                {n:"La Torre",e:"Disastro · Cadono i falsi idoli",kw:"La distruzione necessaria"},
+                {n:"La Stella",e:"Speranza · Connessione cosmica",kw:"La guida celeste"},
+                {n:"La Luna",e:"Illusione · Subconscio",kw:"L'ombra che parla"},
+                {n:"Il Sole",e:"Splendore · Energia vitale",kw:"La luce pura"},
+                {n:"Il Giudizio",e:"Risveglio · Chiamata finale",kw:"Il risveglio"},
+                {n:"Il Mondo",e:"Completamento · Totalità",kw:"Il cerchio si chiude"}
+            ],
+            tarotPositions: ["Passato · Origine","Presente · Sfida","Futuro · Eco"],
+            tarotKeys: [
+                "L'Espiazione · il folle cammino","La Volontà","La Scienza occulta","L'Azione generatrice",
+                "La Realizzazione · il dominio","L'Ispirazione · la legge sacra","La Prova · la scelta d'amore","Il Trionfo",
+                "La Forza morale","La Prudenza · la saggezza","Il Destino · le vicende","L'Equilibrio · la giustizia",
+                "Il Sacrificio","La Trasformazione · la rigenerazione","La Temperanza · l'iniziativa","Il Fato · la passione",
+                "La Rovina · la caduta","La Speranza","Le Delusioni · gli inganni","La Felicità · la luce",
+                "Il Rinnovamento · il risveglio","La Ricompensa · il compimento"
+            ],
+            zodiac: ["Capricorno","Acquario","Pesci","Ariete","Toro","Gemelli","Cancro","Leone","Vergine","Bilancia","Scorpione","Sagittario","Capricorno"],
+            elements: { fire:"🔥 Fuoco", water:"🌊 Acqua", earth:"🌍 Terra", air:"💨 Aria", ether:"⚡ Etere" },
+            chinese: [
+                {n:"Ratto",trait:"Intelligente, adattabile"},{n:"Bue",trait:"Laborioso, affidabile"},
+                {n:"Tigre",trait:"Coraggioso, competitivo"},{n:"Coniglio",trait:"Tranquillo, elegante"},
+                {n:"Drago",trait:"Energico, carismatico"},{n:"Serpente",trait:"Saggio, enigmatico"},
+                {n:"Cavallo",trait:"Energico, indipendente"},{n:"Capra",trait:"Gentile, creativo"},
+                {n:"Scimmia",trait:"Intelligente, versatile"},{n:"Gallo",trait:"Osservatore, puntuale"},
+                {n:"Cane",trait:"Leale, onesto"},{n:"Maiale",trait:"Compassionevole, generoso"}
+            ],
+            chakras: { solar:"Plesso Solare", heart:"Cuore", throat:"Gola", root:"Radice", thirdEye:"Terzo Occhio", crown:"Corona", sacral:"Sacrale" },
+            stones: { 1:"Rubino",2:"Perla di Luna",3:"Topazio",4:"Onice Nero",5:"Acquamarina",6:"Smeraldo",7:"Ametista",8:"Occhio di Tigre",9:"Granato Rosso",11:"Pietra di Luna",22:"Diamante",33:"Lapislazzuli",def:"Quarzo" },
+            compatLevels: [
+                {label:"Risonanza Cosmica Totale",desc:"Le vostre frequenze vibrazionali si fondono in modo raro e potente. Un allineamento che trascende il caso."},
+                {label:"Alta Sinergia Karmica",desc:"I vostri percorsi si integrano profondamente. Esistono tensioni che alimentano la crescita reciproca."},
+                {label:"Equilibrio Dinamico",desc:"Una connessione complessa con forti potenziali. Richiede consapevolezza e lavoro interiore condiviso."},
+                {label:"Sfida Evolutiva",desc:"La polarità tra le vostre energie genera attrito. Ma l'attrito produce luce. La relazione è un catalizzatore."}
+            ]
+        },
+
+        en: {
+            code: 'en', locale: 'en-US', docTitle: 'ARCANUM // DSLV.TECH',
+            ui: {
+                headerSub: 'Secure Uplink — Esoteric Engine v2.0',
+                panelEyebrow: '⬡ Initializing Soul Protocol ⬡',
+                desc: "Decryption of the Vibrational Entity through Pythagorean numeric calculation, reading of the Major Arcana and cosmic mapping of consciousness.",
+                labelName: '◈ Subject Designation (Full Name)',
+                phName: '— name —',
+                labelDob: '◈ Point of Origin (Date of Birth)',
+                sepCompat: '⬡ optional compatibility ⬡',
+                compatAdd: '+ Add Second Subject for Compatibility Analysis',
+                compatRemove: '− Remove Second Subject',
+                labelName2: '◈ Subject B Designation (Name)',
+                labelDob2: '◈ Point of Origin — Subject B',
+                btnSubmit: '⬡ Run Esoteric Algorithm ⬡',
+                loaderText: 'Processing...',
+                mastheadRune: '⛤ Vibrational Code Decrypted ⛤',
+                secNumero: '◈ Numerological Matrix',
+                numeroSub: 'Vibrational codes extracted from Pythagorean analysis',
+                numLifePath: 'Life Path', numExpression: 'Expression',
+                numSoulUrge: 'Soul Urge', numPersonality: 'Personality',
+                secIdentity: '◈ Cosmic Identity',
+                idZodiac: 'Zodiac Sign', idChinese: 'Chinese Zodiac',
+                idChakra: 'Dominant Chakra', idStone: 'Lucky Stone',
+                elementLabel: 'Element', energyLabel: 'Energy', stoneSub: 'Paired with number',
+                secDaily: '◈ Card of the Day', dailyEyebrow: '⛤ Arcanum of the Day —',
+                dailyUpright: '[ UPRIGHT — Direct Energy ]', dailyReversed: '[ REVERSED — Blocked Energy ]',
+                dailyDescUp: 'Today your vibrational field is aligned with the principle of <em>{kw}</em>. Act with this awareness.',
+                dailyDescRev: "This card's energy is reversed today: examine the inner resistances tied to <em>{kw}</em>.",
+                secCompat: '◈ Compatibility Analysis', compatSynergy: 'Synergy',
+                secTarot: '◈ The Three Divinatory Sigils',
+                tarotInstruction: 'Interact with the card backs in turn to reveal your Arcana',
+                tUpright: '[ UPRIGHT ]', tReversed: '[ REVERSED ]',
+                keyLabel: 'Key', secSequence: '◈ The Code of the Major Arcana',
+                sequenceIntro: "Read in order from I to XXI, the Arcana form a single initiatic sentence on the soul's journey. The first word is Will.",
+                seqShow: '⬡ Reveal the Sacred Sequence ⬡', seqHide: '⬡ Conceal the Sequence ⬡',
+                shareBtn: '⛤ Share the Reading ⛤',
+                shareTitle: 'My ARCANUM reading',
+                shareText: 'My vibrational decryption — {name}',
+                shareCopied: '✦ Link copied to clipboard ✦',
+                shareError: "Couldn't copy the link",
+                btnRestart: '[ Close Connection · Purge Data ]',
+                dateInfo: 'Born {d}/{m}/{y} · Year {yr} · Cycle {cy}',
+                dateLabelInitial: 'Date of Birth: —',
+                errName: 'Enter a valid name (min. 2 letters).',
+                errDob: 'Enter a valid date of birth (not in the future).'
+            },
+            loader: [
+                'Initializing soul sequence...',
+                'Computing numerological frequency...',
+                'Decrypting vibrational codes...',
+                'Aligning the Major Arcana...',
+                'Mapping dominant chakra...',
+                'Extracting divinatory sigils...',
+                'Esoteric protocol complete.'
+            ],
+            numero: {
+                1:{arch:"The Pioneer",desc:"Absolute willpower and primal instinct. You are a creative spark born to lead, break chains and inaugurate new cycles. Your karma is total independence."},
+                2:{arch:"The Mediator",desc:"Master of occult diplomacy. You perceive the invisible tensions between people and neutralize them with surgical precision. Your strength hides in empathy, not dominance."},
+                3:{arch:"The Communicator",desc:"An explosion of creative energy and magnetic charisma. Your mind is a luminous labyrinth. Art, word, creative chaos: the world is yours every time you speak."},
+                4:{arch:"The Builder",desc:"Architect of cosmic order. Where others see chaos, you project structure. Your mind is a machine that turns entropy into foundations. Stable. Indestructible."},
+                5:{arch:"The Visionary",desc:"Freedom is your oxygen. Dynamic, adaptable, unpredictable. Your consciousness tolerates no system boundaries. You are the agent of perpetual change."},
+                6:{arch:"The Guardian",desc:"Total compassion and deep harmony. You are the magnetic pole around which others orbit. You protect, heal and balance opposites with a grace others can barely perceive."},
+                7:{arch:"The Philosopher",desc:"Analytical and mystical at once. You seek cosmic truths hidden beneath the surface of everything. Solitude is your laboratory. Doubt is your sacred method."},
+                8:{arch:"The Manifestor",desc:"Absolute mastery over the material plane. You hold a direct link to the forces of power and execution. Wealth and authority are not goals: they are your natural frequency."},
+                9:{arch:"The Humanitarian",desc:"Consciousness expanded beyond the boundaries of the self. You complete the great karmic cycles. Your compassion has no object: it is universal, unconditional, often misunderstood."},
+                11:{arch:"[ MASTER ] The Enlightened",desc:"Master number. Paranormal intuition and extreme sensitivity to the invisible field. You are a bridge between the ordinary dimension and the supernatural. Carrying this light has its cost."},
+                22:{arch:"[ MASTER ] The Master Builder",desc:"The most powerful manifestation number. You have the vision of the visionary and the solidity of the builder. You can turn cosmic ideas into real architecture."},
+                33:{arch:"[ MASTER ] The Universal Healer",desc:"The highest frequency. All your energy is devoted to raising the vibration of the collective. Boundless compassion, conscious sacrifice, absolute love."}
+            },
+            tarot: [
+                {n:"The Fool",e:"New beginnings · Innocence",kw:"Leap into the void"},
+                {n:"The Magician",e:"Willpower · Manifestation",kw:"Anything is possible"},
+                {n:"The High Priestess",e:"Intuition · Deep mystery",kw:"Listen to the silence"},
+                {n:"The Empress",e:"Creation · Abundance",kw:"Cosmic fertility"},
+                {n:"The Emperor",e:"Structure · Authority",kw:"Absolute order"},
+                {n:"The Hierophant",e:"Tradition · Sacred knowledge",kw:"The ancient code"},
+                {n:"The Lovers",e:"Choice · Duality · Union",kw:"The definitive choice"},
+                {n:"The Chariot",e:"Victory through control",kw:"Mastery of force"},
+                {n:"Strength",e:"Inner power · Restraint",kw:"Inner strength"},
+                {n:"The Hermit",e:"Isolation · Ancient wisdom",kw:"The solitary light"},
+                {n:"Wheel of Fortune",e:"Destiny · Cycles · Fate",kw:"The wheel turns"},
+                {n:"Justice",e:"Karma · Cold truth",kw:"The cosmic verdict"},
+                {n:"The Hanged Man",e:"Sacrifice · Suspension",kw:"Stop to see"},
+                {n:"Death",e:"Complete transformation",kw:"The metamorphosis"},
+                {n:"Temperance",e:"Alchemy · Synthesis",kw:"The perfect flow"},
+                {n:"The Devil",e:"Addiction · Shadow self",kw:"The invisible chains"},
+                {n:"The Tower",e:"Disaster · False idols fall",kw:"The necessary destruction"},
+                {n:"The Star",e:"Hope · Cosmic connection",kw:"The celestial guide"},
+                {n:"The Moon",e:"Illusion · Subconscious",kw:"The shadow that speaks"},
+                {n:"The Sun",e:"Brilliance · Life energy",kw:"The pure light"},
+                {n:"Judgement",e:"Awakening · Final call",kw:"The awakening"},
+                {n:"The World",e:"Completion · Wholeness",kw:"The circle closes"}
+            ],
+            tarotPositions: ["Past · Origin","Present · Challenge","Future · Echo"],
+            tarotKeys: [
+                "The Atonement · the wanderer","The Will of Man","Occult Science","Generative Action",
+                "Realization · dominion","Inspiration · sacred law","The Trial · the choice of love","Triumph",
+                "Moral Strength","Prudence · wisdom","Destiny · vicissitude","Equilibrium · justice",
+                "Sacrifice","Transformation · regeneration","Temperance · initiative","Fate · passion",
+                "Ruin · the fall","Hope","Delusion · hidden foes","Happiness · light",
+                "Renewal · awakening","Reward · fulfillment"
+            ],
+            zodiac: ["Capricorn","Aquarius","Pisces","Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn"],
+            elements: { fire:"🔥 Fire", water:"🌊 Water", earth:"🌍 Earth", air:"💨 Air", ether:"⚡ Ether" },
+            chinese: [
+                {n:"Rat",trait:"Intelligent, adaptable"},{n:"Ox",trait:"Hard-working, reliable"},
+                {n:"Tiger",trait:"Brave, competitive"},{n:"Rabbit",trait:"Calm, elegant"},
+                {n:"Dragon",trait:"Energetic, charismatic"},{n:"Snake",trait:"Wise, enigmatic"},
+                {n:"Horse",trait:"Energetic, independent"},{n:"Goat",trait:"Gentle, creative"},
+                {n:"Monkey",trait:"Clever, versatile"},{n:"Rooster",trait:"Observant, punctual"},
+                {n:"Dog",trait:"Loyal, honest"},{n:"Pig",trait:"Compassionate, generous"}
+            ],
+            chakras: { solar:"Solar Plexus", heart:"Heart", throat:"Throat", root:"Root", thirdEye:"Third Eye", crown:"Crown", sacral:"Sacral" },
+            stones: { 1:"Ruby",2:"Moonstone",3:"Topaz",4:"Black Onyx",5:"Aquamarine",6:"Emerald",7:"Amethyst",8:"Tiger's Eye",9:"Red Garnet",11:"Moonstone",22:"Diamond",33:"Lapis Lazuli",def:"Quartz" },
+            compatLevels: [
+                {label:"Total Cosmic Resonance",desc:"Your vibrational frequencies merge in a rare and powerful way. An alignment that transcends chance."},
+                {label:"High Karmic Synergy",desc:"Your paths integrate deeply. Tensions exist that fuel mutual growth."},
+                {label:"Dynamic Balance",desc:"A complex connection with strong potential. It requires awareness and shared inner work."},
+                {label:"Evolutionary Challenge",desc:"The polarity between your energies generates friction. But friction produces light. The relationship is a catalyst."}
+            ]
         }
-        next();
+    };
+
+    /* Master number-safe accessor for numerology data */
+    function numeroData(dict, n) {
+        return dict.numero[n] || dict.numero[((n - 1) % 9) + 1] || dict.numero[1];
+    }
+    function fill(tpl, map) { return tpl.replace(/\{(\w+)\}/g, (_, k) => (k in map ? map[k] : '')); }
+
+    /* ═══════════════════════════════════════════
+       LANGUAGE STATE
+       ═══════════════════════════════════════════ */
+    const state = { lang: 'it', result: null };
+
+    function savedLang() {
+        try { return localStorage.getItem('arcanum_lang'); } catch (e) { return null; }
+    }
+    function storeLang(l) {
+        try { localStorage.setItem('arcanum_lang', l); } catch (e) { /* ignore */ }
+    }
+    function detectLang() {
+        const s = savedLang();
+        if (s && T[s]) return s;
+        const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+        return nav.startsWith('it') ? 'it' : 'en';
     }
 
-    // ═══════════════════════════════════════════
-    //  COMPAT TOGGLE
-    // ═══════════════════════════════════════════
-    const compatToggle=document.getElementById('compat-toggle');
-    const compatFields=document.getElementById('compat-fields');
-    let compatActive=false;
-    compatToggle.addEventListener('click',()=>{
-        compatActive=!compatActive;
+    /* ═══════════════════════════════════════════
+       STATIC I18N APPLY
+       ═══════════════════════════════════════════ */
+    const compatToggle = document.getElementById('compat-toggle');
+    const compatFields = document.getElementById('compat-fields');
+    let compatActive = false;
+
+    function applyStatic(d) {
+        document.documentElement.lang = d.code;
+        document.title = d.docTitle;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const k = el.getAttribute('data-i18n');
+            if (d.ui[k] != null) el.textContent = d.ui[k];
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+            const k = el.getAttribute('data-i18n-ph');
+            if (d.ui[k] != null) el.placeholder = d.ui[k];
+        });
+        compatToggle.textContent = compatActive ? d.ui.compatRemove : d.ui.compatAdd;
+        const seqBtn = document.getElementById('seq-toggle');
+        if (seqBtn) seqBtn.textContent = seqOpen ? d.ui.seqHide : d.ui.seqShow;
+        // keep dynamic date label if results already rendered
+        if (!state.result) {
+            document.getElementById('res-date-info').textContent = d.ui.dateLabelInitial;
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESULT RENDERING (index-based, language-driven)
+       ═══════════════════════════════════════════ */
+    function renderResults(d, animate) {
+        const r = state.result;
+        if (!r) return;
+
+        // Masthead
+        const nameEl = document.getElementById('res-name');
+        if (animate) scramble(nameEl, r.name.toUpperCase(), 1800);
+        else nameEl.textContent = r.name.toUpperCase();
+        document.getElementById('res-date-info').textContent = fill(d.ui.dateInfo, {
+            d: String(r.day).padStart(2,'0'), m: String(r.month).padStart(2,'0'),
+            y: r.year, yr: r.year, cy: r.dest
+        });
+
+        // Numbers
+        const nums = [
+            { id:'destiny', val:r.dest }, { id:'expression', val:r.expr },
+            { id:'soul', val:r.soul }, { id:'personality', val:r.pers }
+        ];
+        nums.forEach(({ id, val }, i) => {
+            const apply = () => {
+                const el = document.getElementById(`val-${id}`);
+                el.classList.toggle('master', NE.masters.has(val));
+                if (animate) scramble(el, String(val), 900 + i*150);
+                else el.textContent = String(val);
+                const data = numeroData(d, val);
+                document.getElementById(`arch-${id}`).textContent = data.arch;
+                document.getElementById(`expl-${id}`).textContent = data.desc;
+            };
+            animate ? setTimeout(apply, i*200) : apply();
+        });
+
+        // Identity grid
+        const zEl = d.elements[ZODIAC_ELEMENT[r.zodiacIdx]];
+        const lifeEl = d.elements[ELEMENT_BY_LIFEPATH[r.dest] || 'ether'];
+        const chK = CHAKRA_BY_SOUL[r.soul] || 'sacral';
+        const idItems = [
+            { glyph: ZODIAC_SYM[r.zodiacIdx], title: d.ui.idZodiac, val: d.zodiac[r.zodiacIdx], sub: `${d.ui.elementLabel}: ${zEl}` },
+            { glyph: CHINESE_SYM[r.chineseIdx], title: d.ui.idChinese, val: d.chinese[r.chineseIdx].n, sub: d.chinese[r.chineseIdx].trait },
+            { glyph: CHAKRA_SYM[chK], title: d.ui.idChakra, val: d.chakras[chK], sub: `${d.ui.energyLabel}: ${lifeEl}` },
+            { glyph: "💎", title: d.ui.idStone, val: (d.stones[r.expr] || d.stones.def), sub: `${d.ui.stoneSub} ${r.expr}` }
+        ];
+        const ig = document.getElementById('identity-grid');
+        ig.innerHTML = '';
+        idItems.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'identity-card';
+            div.innerHTML = `<div class="id-glyph">${item.glyph}</div><div class="id-title">${item.title}</div><div class="id-value">${item.val}</div><div class="id-sub">${item.sub}</div>`;
+            ig.appendChild(div);
+        });
+
+        // Daily card
+        const dc = ARCANA_META[r.daily.idx];
+        const dcT = d.tarot[r.daily.idx];
+        const today = new Date();
+        const descTpl = r.daily.rev ? d.ui.dailyDescRev : d.ui.dailyDescUp;
+        document.getElementById('daily-card-wrap').innerHTML = `
+            <div class="daily-card-mini">
+                <div class="dcm-frame">
+                    <div class="dcm-symbol">${dc.sym}</div>
+                    <div class="dcm-roman">${dc.id}</div>
+                </div>
+            </div>
+            <div class="daily-card-info">
+                <div class="dc-eyebrow">${d.ui.dailyEyebrow} ${today.toLocaleDateString(d.locale)}</div>
+                <div class="dc-name">${dcT.n}</div>
+                <div class="dc-key">❦ ${d.ui.keyLabel}: ${d.tarotKeys[r.daily.idx]}</div>
+                <div class="dc-state ${r.daily.rev?'rev':'up'}">${r.daily.rev?d.ui.dailyReversed:d.ui.dailyUpright}</div>
+                <div class="dc-desc">${dcT.e}. ${fill(descTpl, { kw: dcT.kw.toLowerCase() })}</div>
+            </div>`;
+
+        // Compatibility
+        const compatSection = document.getElementById('compat-section');
+        if (r.compat) {
+            compatSection.style.display = 'block';
+            const lvl = d.compatLevels[r.compat.levelIdx];
+            document.getElementById('compat-result').innerHTML = `
+                <div class="compat-score-wrap">
+                    <div class="compat-person">
+                        <div class="p-name">${escapeHtml(r.nameA.toUpperCase())}</div>
+                        <div class="p-num">${r.dest}</div>
+                    </div>
+                    <div class="compat-vs">⬡</div>
+                    <div class="compat-person">
+                        <div class="p-name">${escapeHtml(r.nameB.toUpperCase())}</div>
+                        <div class="p-num">${r.compat.dest2}</div>
+                    </div>
+                </div>
+                <div class="compat-pct" id="compat-pct-val">${animate ? '0%' : r.compat.score + '%'}</div>
+                <div class="compat-bar-wrap"><div class="compat-bar" id="compat-bar" style="width:${animate ? 0 : r.compat.score}%"></div></div>
+                <div class="compat-label">${lvl.label} · ${d.ui.compatSynergy} ${r.compat.synergy}</div>
+                <div class="compat-desc">${lvl.desc}</div>`;
+            if (animate) {
+                setTimeout(() => {
+                    document.getElementById('compat-bar').style.width = r.compat.score + '%';
+                    let v = 0;
+                    const iv = setInterval(() => {
+                        v += 2; if (v >= r.compat.score) { v = r.compat.score; clearInterval(iv); }
+                        const el = document.getElementById('compat-pct-val');
+                        if (el) el.textContent = v + '%';
+                    }, 30);
+                }, 600);
+            }
+        } else {
+            compatSection.style.display = 'none';
+        }
+
+        renderTarot(d, animate);
+        buildSequence(d);
+    }
+
+    function buildSequence(d) {
+        const ol = document.getElementById('sequence-list');
+        ol.innerHTML = '';
+        ARCANA_META.forEach((m, i) => {
+            const li = document.createElement('li');
+            li.className = 'seq-item';
+            li.style.animationDelay = (i * 0.02) + 's';
+            li.innerHTML = `<div class="seq-roman">${m.id}</div><div class="seq-body"><div class="seq-name">${d.tarot[i].n}</div><div class="seq-key">${d.tarotKeys[i]}</div></div>`;
+            ol.appendChild(li);
+        });
+    }
+
+    function renderTarot(d, animate) {
+        const r = state.result;
+        const board = document.getElementById('tarot-board');
+        board.innerHTML = '';
+        r.cards.forEach((c, i) => {
+            const meta = ARCANA_META[c.idx];
+            const t = d.tarot[c.idx];
+            const revealed = r.revealed[i];
+
+            const wrap = document.createElement('div');
+            wrap.className = 'tarot-wrapper' + (revealed ? ' revealed' : '');
+
+            const frame = document.createElement('div');
+            frame.className = 'tarot-card-frame';
+
+            const card = document.createElement('div');
+            card.className = 'tarot-card' + (revealed ? ' flipped' + (c.rev ? ' reversed' : '') : '');
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', d.tarotPositions[i]);
+
+            const nameTxt = revealed ? t.n : '████████';
+            const energyTxt = revealed ? `"${t.e}"` : '██████████████';
+
+            card.innerHTML = `
+                <div class="card-face card-back">
+                    <div class="card-back-inner">
+                        <span class="cb-sigil">⛤</span>
+                        <div class="cb-brand">ARCANUM</div>
+                        <div class="cb-dots">· · · · ·</div>
+                    </div>
+                </div>
+                <div class="card-face card-front ${c.rev?'reversed-border reversed-content':''}">
+                    <div class="card-top-bar ${c.rev?'rev-bar':''}">
+                        <div class="c-roman">${meta.id}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body-inner">
+                            <div class="c-symbol">${meta.sym}</div>
+                            <div class="c-name scr-name">${nameTxt}</div>
+                            <div class="c-energy scr-energy">${energyTxt}</div>
+                            <div class="c-keyword">${t.kw}</div>
+                            <div class="c-key">❦ ${d.tarotKeys[c.idx]}</div>
+                        </div>
+                    </div>
+                    <div class="card-bottom-bar">
+                        <span class="c-state ${c.rev?'reversed':'upright'}">${c.rev?d.ui.tReversed:d.ui.tUpright}</span>
+                    </div>
+                </div>`;
+
+            const reveal = () => {
+                if (card.classList.contains('flipped')) return;
+                card.classList.add('flipped');
+                if (c.rev) card.classList.add('reversed');
+                wrap.classList.add('revealed');
+                r.revealed[i] = true;
+                setTimeout(() => {
+                    scramble(card.querySelector('.scr-name'), t.n, 700);
+                    scramble(card.querySelector('.scr-energy'), `"${t.e}"`, 900);
+                }, 400);
+            };
+            card.addEventListener('click', reveal);
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); }
+            });
+
+            frame.appendChild(card);
+            wrap.appendChild(frame);
+            const lbl = document.createElement('div');
+            lbl.className = 'tarot-label';
+            lbl.textContent = d.tarotPositions[i];
+            wrap.appendChild(lbl);
+            board.appendChild(wrap);
+        });
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, m => (
+            { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]
+        ));
+    }
+
+    /* ═══════════════════════════════════════════
+       LANGUAGE SWITCHING
+       ═══════════════════════════════════════════ */
+    function setLang(lang) {
+        if (!T[lang]) return;
+        state.lang = lang;
+        storeLang(lang);
+        const d = T[lang];
+        applyStatic(d);
+        document.querySelectorAll('.lang-switch .lang-btn').forEach(btn => {
+            const on = btn.dataset.lang === lang;
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (state.result) renderResults(d, false); // re-render instantly, keep revealed cards
+    }
+
+    document.querySelectorAll('.lang-switch .lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLang(btn.dataset.lang));
+    });
+
+    /* ═══════════════════════════════════════════
+       LOADER SEQUENCE
+       ═══════════════════════════════════════════ */
+    function runLoader(cb) {
+        const logEl = document.getElementById('loader-log');
+        const lines = T[state.lang].loader;
+        let i = 0;
+        (function next() {
+            if (i >= lines.length) { setTimeout(cb, 300); return; }
+            logEl.textContent = lines[i++];
+            setTimeout(next, reduceMotion ? 120 : 350);
+        })();
+    }
+
+    /* ═══════════════════════════════════════════
+       COMPAT TOGGLE
+       ═══════════════════════════════════════════ */
+    compatToggle.addEventListener('click', () => {
+        compatActive = !compatActive;
         compatToggle.classList.toggle('active', compatActive);
-        compatToggle.textContent = compatActive
-            ? '− Rimuovi Secondo Soggetto'
-            : '+ Aggiungi Secondo Soggetto per Analisi di Compatibilità';
+        compatToggle.setAttribute('aria-expanded', compatActive ? 'true' : 'false');
+        compatToggle.textContent = compatActive ? T[state.lang].ui.compatRemove : T[state.lang].ui.compatAdd;
         compatFields.classList.toggle('visible', compatActive);
     });
 
-    // ═══════════════════════════════════════════
-    //  MAIN FORM SUBMIT
-    // ═══════════════════════════════════════════
-    const inputSec=document.getElementById('input-section');
-    const resSec=document.getElementById('results-section');
-    const form=document.getElementById('engine-form');
-    const loaderWrap=document.getElementById('loader-wrap');
+    /* ═══════════════════════════════════════════
+       SACRED SEQUENCE TOGGLE
+       ═══════════════════════════════════════════ */
+    let seqOpen = false;
+    const seqToggle = document.getElementById('seq-toggle');
+    const seqList = document.getElementById('sequence-list');
+    seqToggle.addEventListener('click', () => {
+        seqOpen = !seqOpen;
+        seqList.hidden = !seqOpen;
+        seqToggle.setAttribute('aria-expanded', seqOpen ? 'true' : 'false');
+        seqToggle.textContent = seqOpen ? T[state.lang].ui.seqHide : T[state.lang].ui.seqShow;
+    });
+
+    /* ═══════════════════════════════════════════
+       VALIDATION HELPERS
+       ═══════════════════════════════════════════ */
+    function showError(inputId, errId, show) {
+        const input = document.getElementById(inputId);
+        const err = document.getElementById(errId);
+        err.classList.toggle('show', show);
+        input.setAttribute('aria-invalid', show ? 'true' : 'false');
+    }
+    function validName(v) {
+        return v.trim().normalize('NFD').replace(/[^a-zA-Z]/g, '').length >= 2;
+    }
+    function validDate(v) {
+        if (!v) return false;
+        const dt = new Date(v + 'T00:00:00');
+        if (isNaN(dt.getTime())) return false;
+        const today = new Date(); today.setHours(23, 59, 59, 999);
+        return dt <= today && dt.getFullYear() >= 1000;
+    }
+
+    /* Set max=today on date inputs */
+    (function () {
+        const t = new Date();
+        const iso = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+        document.getElementById('birthDate').max = iso;
+        document.getElementById('birthDate2').max = iso;
+    })();
+
+    /* ═══════════════════════════════════════════
+       MAIN FORM SUBMIT
+       ═══════════════════════════════════════════ */
+    const inputSec = document.getElementById('input-section');
+    const resSec = document.getElementById('results-section');
+    const form = document.getElementById('engine-form');
+    const loaderWrap = document.getElementById('loader-wrap');
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        const name=document.getElementById('fullName').value.trim();
-        const dob=document.getElementById('birthDate').value;
-        if(!name||!dob) return;
 
-        const name2=document.getElementById('fullName2').value.trim();
-        const dob2=document.getElementById('birthDate2').value;
-        const hasCompat=compatActive&&name2&&dob2;
+        const name = document.getElementById('fullName').value.trim();
+        const dob = document.getElementById('birthDate').value;
 
-        // Hide form, show loader
-        form.style.opacity='0'; form.style.pointerEvents='none';
-        setTimeout(()=>{form.style.display='none'; loaderWrap.style.display='flex';},300);
+        const okName = validName(name);
+        const okDate = validDate(dob);
+        showError('fullName', 'err-name', !okName);
+        showError('birthDate', 'err-dob', !okDate);
+        if (!okName || !okDate) {
+            document.getElementById(!okName ? 'fullName' : 'birthDate').focus();
+            return;
+        }
 
-        runLoader(()=>{
-            // COMPUTE
+        const name2 = document.getElementById('fullName2').value.trim();
+        const dob2 = document.getElementById('birthDate2').value;
+        const hasCompat = compatActive && validName(name2) && validDate(dob2);
+
+        form.style.opacity = '0'; form.style.pointerEvents = 'none';
+        setTimeout(() => { form.style.display = 'none'; loaderWrap.style.display = 'flex'; }, 300);
+
+        runLoader(() => {
+            // ---- COMPUTE (language-neutral) ----
             const dest = NE.calcDate(dob);
-            const expr = NE.calcStr(name,'all');
-            const soul = NE.calcStr(name,'v');
-            const pers = NE.calcStr(name,'c');
+            const expr = NE.calcStr(name, 'all');
+            const soul = NE.calcStr(name, 'v');
+            const pers = NE.calcStr(name, 'c');
+            const [year, month, day] = dob.split('-').map(Number);
 
-            const zodiac = getWesternZodiac(dob);
-            const year   = parseInt(dob.split('-')[0]);
-            const chinese= getChineseZodiac(year);
-            const element= getElement(dest);
-            const chakra = getChakra(soul);
-            const stone  = getLuckyStone(expr);
+            const today = new Date();
+            const dailySeed = (today.getFullYear() * 10000 + today.getMonth() * 100 + today.getDate()) * (dest || 1);
+            const daily = dailyDraw(dailySeed);
 
-            // Daily card seed = day+month+lifepath
-            const [dy,dm,dd]=dob.split('-').map(Number);
-            const today=new Date();
-            const dailySeed=(today.getFullYear()*10000+today.getMonth()*100+today.getDate())*dest;
-            const dailyCard=TE.dailyCard(dailySeed);
+            const nameSeed = (name.split('').reduce((a, c) => a + c.charCodeAt(0), 0) * (dest || 1)) >>> 0;
+            const cards = drawCards(3, nameSeed);
 
-            // Tarot seed = name hash
-            const nameSeed=name.split('').reduce((a,c)=>a+c.charCodeAt(0),0)*dest;
-            const cards=TE.draw(3, nameSeed);
+            const result = {
+                name, dob, day, month, year, dest, expr, soul, pers,
+                zodiacIdx: westernZodiacIdx(dob),
+                chineseIdx: chineseZodiacIdx(year),
+                daily, cards, revealed: [false, false, false],
+                compat: null, nameA: name.split(' ')[0], nameB: '',
+                name2: '', dob2: ''
+            };
 
-            // RENDER
-            inputSec.style.opacity='0'; inputSec.style.transform='scale(1.05)';
-            setTimeout(()=>{
-                inputSec.style.display='none';
-                resSec.style.display='flex';
+            if (hasCompat) {
+                const dest2 = NE.calcDate(dob2);
+                const c = calcCompatibility(dest, dest2);
+                result.compat = { dest2, score: c.score, levelIdx: c.levelIdx, synergy: c.synergy };
+                result.nameB = name2.split(' ')[0];
+                result.name2 = name2; result.dob2 = dob2;
+            }
+
+            state.result = result;
+
+            // ---- REVEAL RESULTS ----
+            inputSec.style.opacity = '0'; inputSec.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                inputSec.style.display = 'none';
+                resSec.style.display = 'flex';
                 void resSec.offsetWidth;
-                resSec.style.opacity='1'; resSec.style.transform='scale(1)';
-
-                // Name
-                scramble(document.getElementById('res-name'), name.toUpperCase(), 1800);
-                document.getElementById('res-date-info').textContent =
-                    `Nato/a il ${dd.toString().padStart(2,'0')}/${dm.toString().padStart(2,'0')}/${dy} · Anno ${year} · Ciclo ${dest}`;
-
-                // Numbers
-                const nums=[
-                    {id:'destiny',val:dest,label:'Life Path'},
-                    {id:'expression',val:expr,label:'Expression'},
-                    {id:'soul',val:soul,label:'Soul Urge'},
-                    {id:'personality',val:pers,label:'Personality'}
-                ];
-                nums.forEach(({id,val},i)=>{
-                    setTimeout(()=>{
-                        const el=document.getElementById(`val-${id}`);
-                        const isMaster=NE.masters.has(val);
-                        el.classList.toggle('master',isMaster);
-                        scramble(el, String(val), 900+i*150);
-                        const data=NE.get(val);
-                        document.getElementById(`arch-${id}`).textContent=data.arch;
-                        document.getElementById(`expl-${id}`).textContent=data.desc;
-                    }, i*200);
-                });
-
-                // Identity grid
-                const ig=document.getElementById('identity-grid');
-                ig.innerHTML='';
-                const idItems=[
-                    {glyph:zodiac.sym,title:"Segno Zodiacale",val:zodiac.n,sub:`Elemento: ${zodiac.el}`},
-                    {glyph:chinese.sym,title:"Zodico Cinese",val:chinese.n,sub:chinese.trait},
-                    {glyph:chakra.sym,title:"Chakra Dominante",val:chakra.n,sub:`Energia: ${element}`},
-                    {glyph:"💎",title:"Pietra Portafortuna",val:stone,sub:`Abbinata al numero ${expr}`}
-                ];
-                idItems.forEach(item=>{
-                    const d=document.createElement('div');
-                    d.className='identity-card';
-                    d.innerHTML=`<div class="id-glyph">${item.glyph}</div><div class="id-title">${item.title}</div><div class="id-value">${item.val}</div><div class="id-sub">${item.sub}</div>`;
-                    ig.appendChild(d);
-                });
-
-                // Daily card
-                const dcw=document.getElementById('daily-card-wrap');
-                dcw.innerHTML=`
-                    <div class="daily-card-mini">
-                        <div class="dcm-frame">
-                            <div class="dcm-symbol">${dailyCard.sym}</div>
-                            <div class="dcm-roman">${dailyCard.id}</div>
-                        </div>
-                    </div>
-                    <div class="daily-card-info">
-                        <div class="dc-eyebrow">⛤ Arcano del Giorno — ${today.toLocaleDateString('it-IT')}</div>
-                        <div class="dc-name">${dailyCard.n}</div>
-                        <div class="dc-state ${dailyCard.rev?'rev':'up'}">${dailyCard.rev?'[ REVERSED — Energia Bloccata ]':'[ UPRIGHT — Energia Diretta ]'}</div>
-                        <div class="dc-desc">
-                            ${dailyCard.e}. ${dailyCard.rev
-                                ? `L'energia di questa carta è invertita oggi: esamina le resistenze interiori legate a <em>${dailyCard.kw.toLowerCase()}</em>.`
-                                : `Oggi il tuo campo vibrazionale è allineato con il principio di <em>${dailyCard.kw.toLowerCase()}</em>. Agisci con questa consapevolezza.`
-                            }
-                        </div>
-                    </div>
-                `;
-
-                // Compatibility
-                if(hasCompat) {
-                    const dest2=NE.calcDate(dob2);
-                    const compat=calcCompatibility(dest,dest2);
-                    const expr2=NE.calcStr(name2,'all');
-                    const data2=NE.get(dest2);
-                    document.getElementById('compat-section').style.display='block';
-                    const cr=document.getElementById('compat-result');
-                    cr.innerHTML=`
-                        <div class="compat-score-wrap">
-                            <div class="compat-person">
-                                <div class="p-name">${name.split(' ')[0].toUpperCase()}</div>
-                                <div class="p-num">${dest}</div>
-                            </div>
-                            <div class="compat-vs">⬡</div>
-                            <div class="compat-person">
-                                <div class="p-name">${name2.split(' ')[0].toUpperCase()}</div>
-                                <div class="p-num">${dest2}</div>
-                            </div>
-                        </div>
-                        <div class="compat-pct" id="compat-pct-val">0%</div>
-                        <div class="compat-bar-wrap"><div class="compat-bar" id="compat-bar" style="width:0%"></div></div>
-                        <div class="compat-label">${compat.label} · Sinergia ${compat.synergy}</div>
-                        <div class="compat-desc">${compat.desc}</div>
-                    `;
-                    setTimeout(()=>{
-                        document.getElementById('compat-bar').style.width=compat.score+'%';
-                        let v=0; const iv=setInterval(()=>{
-                            v+=2; if(v>=compat.score){v=compat.score;clearInterval(iv);}
-                            document.getElementById('compat-pct-val').textContent=v+'%';
-                        },30);
-                    }, 600);
-                }
-
-                // Tarot cards
-                const board=document.getElementById('tarot-board');
-                board.innerHTML='';
-                const posLabels=["Passato · Origine","Presente · Sfida","Futuro · Eco"];
-                cards.forEach((c,i)=>{
-                    const wrap=document.createElement('div');
-                    wrap.className='tarot-wrapper';
-
-                    const frame=document.createElement('div');
-                    frame.className='tarot-card-frame';
-
-                    const card=document.createElement('div');
-                    card.className='tarot-card';
-                    card.innerHTML=`
-                        <div class="card-face card-back">
-                            <div class="card-back-inner">
-                                <span class="cb-sigil">⛤</span>
-                                <div class="cb-brand">ARCANUM</div>
-                                <div class="cb-dots">· · · · ·</div>
-                            </div>
-                        </div>
-                        <div class="card-face card-front ${c.rev?'reversed-border reversed-content':''}">
-                            <div class="card-top-bar ${c.rev?'rev-bar':''}">
-                                <div class="c-roman">${c.id}</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-body-inner">
-                                    <div class="c-symbol">${c.sym}</div>
-                                    <div class="c-name scr-name">████████</div>
-                                    <div class="c-energy scr-energy">██████████████</div>
-                                    <div class="c-keyword">${c.kw}</div>
-                                </div>
-                            </div>
-                            <div class="card-bottom-bar">
-                                <span class="c-state ${c.rev?'reversed':'upright'}">${c.rev?'[ REVERSED ]':'[ UPRIGHT ]'}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    card.addEventListener('click', function() {
-                        if(this.classList.contains('flipped')) return;
-                        this.classList.add('flipped');
-                        if(c.rev) this.classList.add('reversed');
-                        wrap.classList.add('revealed');
-                        setTimeout(()=>{
-                            scramble(this.querySelector('.scr-name'), c.n, 700);
-                            scramble(this.querySelector('.scr-energy'), `"${c.e}"`, 900);
-                        }, 400);
-                    });
-
-                    frame.appendChild(card);
-                    wrap.appendChild(frame);
-                    const lbl=document.createElement('div');
-                    lbl.className='tarot-label'; lbl.textContent=posLabels[i];
-                    wrap.appendChild(lbl);
-                    board.appendChild(wrap);
-                });
-
+                resSec.style.opacity = '1'; resSec.style.transform = 'scale(1)';
+                renderResults(T[state.lang], true);
+                resSec.setAttribute('tabindex', '-1');
+                resSec.focus({ preventScroll: true });
             }, 600);
         });
     });
 
-    function resetEngine() { location.reload(); }
+    document.getElementById('btn-restart').addEventListener('click', () => {
+        location.href = location.origin + location.pathname; // clean URL, fresh form
+    });
+
+    /* Auto-run a shared reading from URL params (?n=&d=&lang=&n2=&d2=) */
+    function autoloadFromURL() {
+        const p = new URLSearchParams(location.search);
+        const n = p.get('n'), d = p.get('d');
+        if (!n || !d || !validName(n) || !validDate(d)) return;
+        document.getElementById('fullName').value = n;
+        document.getElementById('birthDate').value = d;
+        const n2 = p.get('n2'), d2 = p.get('d2');
+        if (n2 && d2 && validName(n2) && validDate(d2)) {
+            if (!compatActive) compatToggle.click();
+            document.getElementById('fullName2').value = n2;
+            document.getElementById('birthDate2').value = d2;
+        }
+        if (typeof form.requestSubmit === 'function') form.requestSubmit();
+        else form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    }
+
+    /* ═══════════════════════════════════════════
+       SHARE / PERMALINK
+       ═══════════════════════════════════════════ */
+    let toastTimer = null;
+    function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    function buildShareURL() {
+        const r = state.result;
+        if (!r) return location.href;
+        const p = new URLSearchParams();
+        p.set('n', r.name);
+        p.set('d', r.dob);
+        p.set('lang', state.lang);
+        if (r.compat) { p.set('n2', r.name2); p.set('d2', r.dob2); }
+        return location.origin + location.pathname + '?' + p.toString();
+    }
+
+    async function copyToClipboard(text) {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (e) { /* fall through */ }
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text; ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        } catch (e) { return false; }
+    }
+
+    async function doShare() {
+        const d = T[state.lang];
+        const r = state.result;
+        if (!r) return;
+        const url = buildShareURL();
+        const shareData = {
+            title: d.ui.shareTitle,
+            text: fill(d.ui.shareText, { name: r.name }),
+            url
+        };
+        if (navigator.share) {
+            try { await navigator.share(shareData); return; }
+            catch (e) { if (e && e.name === 'AbortError') return; /* else fallback */ }
+        }
+        const ok = await copyToClipboard(url);
+        showToast(ok ? d.ui.shareCopied : d.ui.shareError);
+    }
+
+    document.getElementById('btn-share').addEventListener('click', doShare);
+
+    /* ═══════════════════════════════════════════
+       THEME SWITCHING
+       ═══════════════════════════════════════════ */
+    function detectTheme() {
+        try { const s = localStorage.getItem('arcanum_theme'); if (s && THEME_STYLE[s]) return s; } catch (e) { /* ignore */ }
+        return 'dark';
+    }
+    const THEME_BG = { dark: '#020202', manuscript: '#e4d6b4' };
+    function setTheme(t) {
+        if (!THEME_STYLE[t]) return;
+        currentTheme = t;
+        document.documentElement.setAttribute('data-theme', t);
+        const tc = document.querySelector('meta[name="theme-color"]');
+        if (tc) tc.setAttribute('content', THEME_BG[t] || THEME_BG.dark);
+        try { localStorage.setItem('arcanum_theme', t); } catch (e) { /* ignore */ }
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            const on = btn.dataset.theme === t;
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        document.dispatchEvent(new CustomEvent('themechange'));
+    }
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+    });
+
+    /* ═══════════════════════════════════════════
+       INIT
+       ═══════════════════════════════════════════ */
+    setTheme(detectTheme());
+    (function initLang() {
+        const p = new URLSearchParams(location.search).get('lang');
+        setLang(p && T[p] ? p : detectLang());
+    })();
+    autoloadFromURL();
     </script>
 </body>
 </html>

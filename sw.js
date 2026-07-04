@@ -1,5 +1,9 @@
-/* ARCANUM service worker — offline app shell (cache-first) */
-const CACHE = 'arcanum-v1';
+/* ARCANUM service worker
+   - HTML/navigations: network-first (always get the latest page when online),
+     fall back to cache when offline.
+   - Other assets (icons, manifest, fonts): cache-first for speed/offline.
+   Bump CACHE when you ship changes to force old caches to clear. */
+const CACHE = 'arcanum-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -24,12 +28,30 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
+  const req = e.request;
+  if (req.method !== 'GET') return;
+
+  const isHTML = req.mode === 'navigate' ||
+    (req.headers.get('accept') || '').includes('text/html');
+
+  if (isHTML) {
+    // network-first: fetch fresh page, update cache, fall back to cache offline
+    e.respondWith(
+      fetch(req).then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+        return res;
+      }).catch(() => caches.match(req).then((r) => r || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // cache-first for static assets
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request).then((res) => {
+    caches.match(req).then((cached) => cached || fetch(req).then((res) => {
       const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+      caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
       return res;
-    }).catch(() => caches.match('./index.html')))
+    }).catch(() => cached))
   );
 });

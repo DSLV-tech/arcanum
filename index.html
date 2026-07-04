@@ -984,6 +984,10 @@
         [data-theme="manuscript"] .site-footer {
             background: linear-gradient(0deg, rgba(120,88,44,0.12), transparent);
         }
+        [data-theme="manuscript"] .results-nav {
+            background: linear-gradient(180deg, rgba(228,214,180,0.97) 60%, rgba(228,214,180,0.45));
+            border-bottom-color: rgba(92,70,38,0.22);
+        }
         [data-theme="manuscript"] .brand-logo { text-shadow: none; }
         [data-theme="manuscript"] .header-tag { text-shadow: none; }
 
@@ -2675,10 +2679,22 @@
     })();
     autoloadFromURL();
 
-    /* Register service worker (PWA offline). No-op on file:// or unsupported. */
+    /* Register service worker (PWA offline). No-op on file:// or unsupported.
+       Auto-reloads once when an updated worker takes over, so new versions
+       are never masked by a stale cache. */
     if ('serviceWorker' in navigator) {
+        let reloaded = false;
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (reloaded) return;
+                reloaded = true;
+                location.reload();
+            });
+        }
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(() => { /* ignore */ });
+            navigator.serviceWorker.register('sw.js')
+                .then((reg) => reg.update())
+                .catch(() => { /* ignore */ });
         });
     }
     </script>

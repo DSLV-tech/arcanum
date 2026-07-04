@@ -12,7 +12,7 @@ Un calcolatore esoterico interattivo che combina numerologia pitagorica, tarocch
 - **Carta del Giorno** — Arcano estratto algoritmicamente in base alla data corrente
 - **3 Sigilli Divinatori** — Tre carte dei Tarocchi (Passato / Presente / Futuro) con flip animato
 - **Analisi di Compatibilità** — Score vibrazionale tra due soggetti (opzionale)
-- **Il Codice degli Arcani** — la Sequenza Sacra 0→XXI con la chiave esoterica di ogni arcano (tradizione egizio-occulta): I = *La Volontà*, II = *La Scienza occulta*… La chiave appare anche sulle carte estratte e sulla Carta del Giorno
+- **Il Codice degli Arcani** — la Sequenza Sacra 0→XXI con la chiave esoterica di ogni arcano (tradizione egizio-occulta) e la **frase iniziatica** che le lega in un unico racconto del cammino dell'anima. Ogni arcano estratto e la Carta del Giorno hanno anche una sintesi "In chiaro"
 - **Multilingua IT / EN** — selettore in alto a destra, rilevamento automatico della lingua del browser e memoria della scelta
 - **Doppio tema** — ⛤ *Occult / Dark* e ❦ *Manoscritto Alchemico*, commutabili a runtime e persistenti
 - **Glossario Esoterico** — sezione collassabile che spiega in linguaggio semplice i termini della lettura (Sentiero di Vita, Espressione, Arcani, Chakra…), IT/EN

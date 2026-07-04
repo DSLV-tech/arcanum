@@ -89,7 +89,8 @@
 
         #sigil-canvas {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-            width: min(600px, 90vw); height: min(600px, 90vh);
+            width: min(600px, 90vmin); height: min(600px, 90vmin);
+            aspect-ratio: 1 / 1;
             z-index: 0; pointer-events: none; opacity: 0.04;
         }
 
@@ -267,7 +268,7 @@
             color: var(--gold); margin-bottom: 10px; text-transform: uppercase;
         }
         .input-group input {
-            width: 100%;
+            width: 100%; min-width: 0; max-width: 100%;
             background: rgba(0,0,0,0.7);
             border: none; border-bottom: 1px solid rgba(212,175,55,0.3);
             border-left: 2px solid transparent;
@@ -275,6 +276,16 @@
             padding: 14px 12px; outline: none;
             transition: border-color 0.35s, background 0.35s, box-shadow 0.35s, letter-spacing 0.35s;
             text-align: center; letter-spacing: 3px;
+        }
+        /* Native date control: prevent overflow on mobile (iOS won't shrink it) */
+        .input-group input[type="date"] {
+            -webkit-appearance: none; appearance: none;
+            letter-spacing: normal; background-clip: padding-box;
+        }
+        .input-group input[type="date"]:focus { letter-spacing: normal; }
+        .input-group input[type="date"]::-webkit-date-and-time-value { text-align: center; }
+        .input-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(72%) sepia(38%) saturate(560%) hue-rotate(3deg) brightness(92%); cursor: pointer;
         }
         .input-group input:focus {
             background: rgba(212,175,55,0.04);
@@ -620,6 +631,12 @@
             transition: all 0.5s ease 0.4s;
         }
         .tarot-wrapper.revealed .tarot-label { opacity: 1; transform: translateY(0); }
+        .tarot-plain {
+            text-align: center; margin: 10px auto 0; max-width: 220px;
+            font-size: 11px; line-height: 1.6; color: var(--ivory-mid); font-style: italic;
+            opacity: 0; transform: translateY(8px); transition: all 0.5s ease 0.55s;
+        }
+        .tarot-wrapper.revealed .tarot-plain { opacity: 1; transform: translateY(0); }
 
         /* ======= CARTA DEL GIORNO ======= */
         .daily-card-wrap {
@@ -644,6 +661,7 @@
         .dc-state { font-size: 9px; letter-spacing: 0.25em; margin-bottom: 16px; }
         .dc-state.up { color: var(--gold-bright); } .dc-state.rev { color: var(--red-text); }
         .dc-desc { font-size: 11px; color: var(--ivory-mid); line-height: 1.7; }
+        .dc-plain { font-size: 12px; color: var(--ivory-mid); font-style: italic; line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(212,175,55,0.14); }
 
         /* ======= SEQUENZA SACRA (Codice degli Arcani) ======= */
         .seq-toggle {
@@ -659,6 +677,14 @@
             display: grid; gap: 8px;
         }
         .sequence-list[hidden] { display: none; }
+        .seq-initiatic {
+            width: 100%; max-width: 720px; margin: 24px auto 0; padding: 22px 26px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.05), transparent);
+            border-left: 2px solid var(--gold-dim);
+            font-family: var(--serif); font-style: italic; font-size: 14px;
+            line-height: 1.9; color: var(--ivory-mid); text-align: left;
+        }
+        .seq-initiatic[hidden] { display: none; }
         .seq-item {
             display: grid; grid-template-columns: 46px 1fr; align-items: baseline;
             gap: 14px; padding: 12px 18px;
@@ -895,6 +921,7 @@
             border-bottom-color: rgba(92,70,38,0.5);
         }
         [data-theme="manuscript"] .input-group input::placeholder { color: rgba(120,92,40,0.4); }
+        [data-theme="manuscript"] .input-group input[type="date"]::-webkit-calendar-picker-indicator { filter: none; opacity: 0.55; }
         [data-theme="manuscript"] .input-group input:focus {
             background: rgba(255,250,235,0.8);
             box-shadow: 0 6px 16px -10px rgba(92,70,38,0.5);
@@ -941,6 +968,10 @@
             border-color: rgba(92,70,38,0.6);
         }
         [data-theme="manuscript"] .card-top-bar { background: rgba(92,70,38,0.08); border-bottom-color: rgba(92,70,38,0.2); }
+        /* State badges: light chip + dark ink text on parchment (were dark-on-dark) */
+        [data-theme="manuscript"] .c-state.upright { color: var(--gold-bright); background: rgba(212,175,55,0.16); border-color: rgba(92,70,38,0.45); }
+        [data-theme="manuscript"] .c-state.reversed { color: var(--red-text); background: rgba(143,45,30,0.12); border-color: rgba(143,45,30,0.45); }
+        [data-theme="manuscript"] .card-bottom-bar { border-top-color: rgba(92,70,38,0.2); }
         [data-theme="manuscript"] .c-symbol { filter: none; }
         [data-theme="manuscript"] .c-name { color: var(--ivory); }
         [data-theme="manuscript"] .dcm-frame { background: #ded0a8; border-color: rgba(92,70,38,0.5); }
@@ -1104,7 +1135,8 @@
                 <div class="section-title" role="heading" aria-level="2" data-i18n="secSequence">◈ Il Codice degli Arcani Maggiori</div>
             </div>
             <p class="section-sub" data-i18n="sequenceIntro" style="margin-top:0; margin-bottom:28px;">La sequenza sacra.</p>
-            <button class="seq-toggle" id="seq-toggle" aria-expanded="false" aria-controls="sequence-list" data-i18n="seqShow">⬡ Rivela la Sequenza Sacra ⬡</button>
+            <button class="seq-toggle" id="seq-toggle" aria-expanded="false" aria-controls="sequence-note sequence-list" data-i18n="seqShow">⬡ Rivela la Sequenza Sacra ⬡</button>
+            <p class="seq-initiatic" id="sequence-note" data-i18n="initiatic" hidden></p>
             <ol class="sequence-list" id="sequence-list" hidden></ol>
 
             <!-- GLOSSARIO ESOTERICO -->
@@ -1476,6 +1508,7 @@
                 keyLabel: 'Chiave', secSequence: '◈ Il Codice degli Arcani Maggiori',
                 sequenceIntro: "Letti in ordine da I a XXI, gli Arcani compongono un'unica frase iniziatica sul cammino dell'anima. La prima parola è la Volontà.",
                 seqShow: '⬡ Rivela la Sequenza Sacra ⬡', seqHide: '⬡ Cela la Sequenza ⬡',
+                initiatic: "Letti in ordine, gli Arcani compongono un unico racconto: il cammino dell'anima. La Volontà del Mago, illuminata dalla Scienza della Papessa, genera l'Azione dell'Imperatrice, che si compie nella Realizzazione dell'Imperatore, guidata dall'Ispirazione del Papa. Messo alla Prova dagli Amanti, l'iniziato ottiene il Trionfo del Carro grazie all'Equilibrio della Giustizia e alla Prudenza dell'Eremita. La Ruota gira: solo la Forza interiore e il Sacrificio dell'Appeso conducono alla Trasformazione della Morte. Con la Temperanza si doma il Fato del Diavolo; crolla la Torre delle illusioni, finché la Speranza della Stella dissipa gli inganni della Luna. Sorge allora il Sole della felicità, giunge il Risveglio del Giudizio e l'anima riceve la Ricompensa del Mondo: il cerchio che si chiude. Il Matto è l'anima stessa che attraversa ogni arcano.",
                 secGlossary: '◈ Glossario Esoterico',
                 glossaryIntro: 'I termini chiave della lettura, spiegati in modo semplice.',
                 glossaryShow: '⬡ Apri il Glossario ⬡', glossaryHide: '⬡ Chiudi il Glossario ⬡',
@@ -1560,6 +1593,30 @@
                 "La Rovina · la caduta","La Speranza","Le Delusioni · gli inganni","La Felicità · la luce",
                 "Il Rinnovamento · il risveglio","La Ricompensa · il compimento"
             ],
+            tarotPlain: [
+                "Nuovo inizio, spontaneità, un salto verso l'ignoto.",
+                "Hai gli strumenti per agire: volontà e capacità di realizzare.",
+                "Ascolta l'intuito e ciò che non si vede ancora.",
+                "Creatività, abbondanza, cura e crescita.",
+                "Struttura, ordine e autorità: metti solide fondamenta.",
+                "Tradizione, guida, valori condivisi e apprendimento.",
+                "Una scelta importante, spesso legata a relazioni o valori.",
+                "Determinazione e autocontrollo portano alla vittoria.",
+                "Forza interiore, coraggio gentile, padronanza di sé.",
+                "Riflessione e ricerca interiore: un tempo utile di solitudine.",
+                "Cicli e cambiamenti: la sorte gira, conviene adattarsi.",
+                "Equità, verità e conseguenze delle tue azioni.",
+                "Fermati e cambia punto di vista: una pausa necessaria.",
+                "Una fine che apre a un rinnovamento profondo.",
+                "Equilibrio, pazienza e giusta misura.",
+                "Attaccamenti, tentazioni o dipendenze da riconoscere.",
+                "Un crollo improvviso che libera da ciò che era falso.",
+                "Speranza, guarigione e fiducia nel futuro.",
+                "Illusioni e incertezze: non tutto è come appare.",
+                "Gioia, chiarezza, successo ed energia vitale.",
+                "Risveglio, bilancio e una nuova chiamata.",
+                "Compimento e realizzazione: un ciclo che si chiude bene."
+            ],
             zodiac: ["Capricorno","Acquario","Pesci","Ariete","Toro","Gemelli","Cancro","Leone","Vergine","Bilancia","Scorpione","Sagittario","Capricorno"],
             elements: { fire:"🔥 Fuoco", water:"🌊 Acqua", earth:"🌍 Terra", air:"💨 Aria", ether:"⚡ Etere" },
             chinese: [
@@ -1628,6 +1685,7 @@
                 keyLabel: 'Key', secSequence: '◈ The Code of the Major Arcana',
                 sequenceIntro: "Read in order from I to XXI, the Arcana form a single initiatic sentence on the soul's journey. The first word is Will.",
                 seqShow: '⬡ Reveal the Sacred Sequence ⬡', seqHide: '⬡ Conceal the Sequence ⬡',
+                initiatic: "Read in order, the Arcana form a single story: the journey of the soul. The Will of the Magician, lit by the Science of the High Priestess, becomes the Action of the Empress, fulfilled in the Realization of the Emperor and guided by the Inspiration of the Hierophant. Tested by the Lovers, the initiate wins the Triumph of the Chariot through the Equilibrium of Justice and the Prudence of the Hermit. The Wheel turns: only inner Strength and the Sacrifice of the Hanged Man lead to the Transformation of Death. With Temperance the Fate of the Devil is tamed; the Tower of illusions falls, until the Hope of the Star dispels the deceits of the Moon. Then rises the Sun of happiness, comes the Awakening of Judgement, and the soul receives the Reward of the World: the circle that closes. The Fool is the soul itself, walking through every arcanum.",
                 secGlossary: '◈ Esoteric Glossary',
                 glossaryIntro: 'The key terms of the reading, explained in plain language.',
                 glossaryShow: '⬡ Open the Glossary ⬡', glossaryHide: '⬡ Close the Glossary ⬡',
@@ -1711,6 +1769,30 @@
                 "Sacrifice","Transformation · regeneration","Temperance · initiative","Fate · passion",
                 "Ruin · the fall","Hope","Delusion · hidden foes","Happiness · light",
                 "Renewal · awakening","Reward · fulfillment"
+            ],
+            tarotPlain: [
+                "A fresh start, spontaneity, a leap into the unknown.",
+                "You have the tools to act: willpower and the ability to make things happen.",
+                "Listen to intuition and to what isn't visible yet.",
+                "Creativity, abundance, nurturing and growth.",
+                "Structure, order and authority: build solid foundations.",
+                "Tradition, guidance, shared values and learning.",
+                "An important choice, often about relationships or values.",
+                "Determination and self-control lead to victory.",
+                "Inner strength, gentle courage, self-mastery.",
+                "Reflection and inner search: a useful time of solitude.",
+                "Cycles and change: fortune turns, best to adapt.",
+                "Fairness, truth and the consequences of your actions.",
+                "Pause and shift perspective: a necessary standstill.",
+                "An ending that opens the way to deep renewal.",
+                "Balance, patience and the right measure.",
+                "Attachments, temptations or dependencies to recognize.",
+                "A sudden collapse that frees you from what was false.",
+                "Hope, healing and trust in the future.",
+                "Illusions and uncertainty: not everything is as it seems.",
+                "Joy, clarity, success and vital energy.",
+                "Awakening, reckoning and a new calling.",
+                "Completion and fulfillment: a cycle closing well."
             ],
             zodiac: ["Capricorn","Aquarius","Pisces","Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn"],
             elements: { fire:"🔥 Fire", water:"🌊 Water", earth:"🌍 Earth", air:"💨 Air", ether:"⚡ Ether" },
@@ -1872,6 +1954,7 @@
                 <div class="dc-key">❦ ${d.ui.keyLabel}: ${d.tarotKeys[r.daily.idx]}</div>
                 <div class="dc-state ${r.daily.rev?'rev':'up'}">${r.daily.rev?d.ui.dailyReversed:d.ui.dailyUpright}</div>
                 <div class="dc-desc">${dcT.e}. ${fill(descTpl, { kw: dcT.kw.toLowerCase() })}</div>
+                <div class="dc-plain">${d.ui.plainLabel}: ${d.tarotPlain[r.daily.idx]}</div>
             </div>`;
 
         // Compatibility
@@ -2013,6 +2096,10 @@
             lbl.className = 'tarot-label';
             lbl.textContent = d.tarotPositions[i];
             wrap.appendChild(lbl);
+            const plain = document.createElement('div');
+            plain.className = 'tarot-plain';
+            plain.textContent = d.tarotPlain[c.idx];
+            wrap.appendChild(plain);
             board.appendChild(wrap);
         });
     }
@@ -2075,9 +2162,11 @@
     let seqOpen = false;
     const seqToggle = document.getElementById('seq-toggle');
     const seqList = document.getElementById('sequence-list');
+    const seqNote = document.getElementById('sequence-note');
     seqToggle.addEventListener('click', () => {
         seqOpen = !seqOpen;
         seqList.hidden = !seqOpen;
+        seqNote.hidden = !seqOpen;
         seqToggle.setAttribute('aria-expanded', seqOpen ? 'true' : 'false');
         seqToggle.textContent = seqOpen ? T[state.lang].ui.seqHide : T[state.lang].ui.seqShow;
     });
